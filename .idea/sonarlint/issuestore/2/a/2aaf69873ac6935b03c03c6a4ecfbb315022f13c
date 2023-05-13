@@ -1,0 +1,14 @@
+
+9kotlin:S1128"Remove this unused import.(× ôõ8«¬Ô€1
+skotlin:S100Ì"TRename function "open_camera" to match the regular expression ^[a-zA-Z][a-zA-Z0-9]*$(ÇÊ³œ8«¬Ô€1
+wkotlin:S100æ"XRename function "get_permissions" to match the regular expression ^[a-zA-Z][a-zA-Z0-9]*$(Î¿”8«¬Ô€1
+Ckotlin:S1874Ò"#Deprecated code should not be used.(¦¤¿À8«¬Ô€1
+vkotlin:S117e"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$( œÒ†øÿÿÿÿ8Í«¬Ô€1
+qkotlin:S117š"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(Ëº»B8Ü«¬Ô€1
+rkotlin:S117›"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(ƒ‹§ã8Ü«¬Ô€1
+wkotlin:S117œ"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(Ö¶²øÿÿÿÿ8Ü«¬Ô€1
+rkotlin:S117"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(àÇ…Õ8Ü«¬Ô€1
+~kotlin:S1186K"ZAdd a nested comment explaining why this function is empty or complete the implementation.(øúæüÿÿÿÿ8Ü«¬Ô€1
+ykotlin:S1186Ü"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡–ï=8Ü«¬Ô€1
+kotlin:S1186à"ZAdd a nested comment explaining why this function is empty or complete the implementation.(û÷Şİüÿÿÿÿ8Ü«¬Ô€1
+zkotlin:S1186Ö"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ÉÉæ’8Ü«¬Ô€1

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40sp"
+        android:text="운동선택"
+        android:textSize="40sp"/>
+
+    <ImageButton
+        android:id="@+id/squat"
+        android:layout_width="220px"
+        android:layout_height="220px"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="70dp"
+        android:checked="false"
+        android:src="@drawable/squat"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/squat"
+        android:layout_alignBottom="@+id/squat"
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="-40dp"
+        android:text="스쿼트"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/situp"
+        android:layout_width="220px"
+        android:layout_height="220px"
+        android:layout_alignLeft="@+id/squat"
+        android:layout_marginLeft="207dp"
+        android:layout_marginTop="150dp"
+        android:checked="false"
+        android:src="@drawable/situp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/situp"
+        android:layout_alignBottom="@+id/situp"
+        android:layout_marginLeft="-14dp"
+        android:layout_marginBottom="-40dp"
+        android:text="윗몸일으키기"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/pullup"
+        android:layout_width="220px"
+        android:layout_height="220px"
+        android:layout_alignBottom="@+id/squat"
+        android:layout_marginBottom="-200dp"
+        android:layout_marginLeft="70dp"
+        android:checked="false"
+        android:src="@drawable/pullup" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pushup"
+        android:layout_alignBottom="@+id/pushup"
+        android:layout_marginLeft="-3dp"
+        android:layout_marginBottom="-40dp"
+        android:text="팔굽혀펴기"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/pushup"
+        android:layout_width="220px"
+        android:layout_height="220px"
+        android:layout_alignLeft="@+id/squat"
+        android:layout_marginLeft="207dp"
+        android:layout_alignBottom="@+id/squat"
+        android:layout_marginBottom="-200dp"
+        android:checked="false"
+        android:src="@drawable/pushup" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pullup"
+        android:layout_alignBottom="@+id/pullup"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="-40dp"
+        android:text="턱걸이"
+        android:textSize="20sp" />
+
+</RelativeLayout>
