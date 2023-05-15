@@ -9,14 +9,8 @@ j
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 h
 8app/src/main/java/com/example/mocap01/SquatActivity.java,2\4\241e358545e7c6e77f75c9aaa48aa41c2c94784f
-d
-4app/src/main/java/com/example/mocap01/DetectSquat.kt,2\a\2aaf69873ac6935b03c03c6a4ecfbb315022f13c
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
-k
-;app/src/main/java/com/example/mocap01/RegisterActivity.java,4\3\43c814590191b5ecaf27561a4d18b29f4e113a63
-f
-6app/src/main/java/com/example/mocap01/UserAccount.java,f\3\f3056106841520fcab8f169c62ab26a0c17815d4
 e
 5app/src/main/java/com/example/mocap01/Exercise01.java,a\f\af867fa7f1700e68c939438d1af1abea2aa1a9fc
 P
