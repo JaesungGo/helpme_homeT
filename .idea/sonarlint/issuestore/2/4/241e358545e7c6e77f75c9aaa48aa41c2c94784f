@@ -1,9 +1,0 @@
-
-m	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ôˆ§Ã8Ç™•Ó€1
-E
-java:S1604"(Make this anonymous inner class a lambda(„ÑñŒ8Ç™•Ó€1
-p
-java:S3008
-"SRename this field "TIME_OUT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(çÔÌÏ8ã™•Ó€1
-L
-java:S1874"/Remove this use of "Handler"; it is deprecated.(„ÑñŒ8ü™•Ó€1

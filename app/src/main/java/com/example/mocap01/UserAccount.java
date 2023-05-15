@@ -25,5 +25,4 @@ public class UserAccount{
     private String password;
 
 
-
 }
