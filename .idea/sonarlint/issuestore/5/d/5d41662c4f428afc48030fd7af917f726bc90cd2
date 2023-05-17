@@ -1,0 +1,36 @@
+
+t
+java:S2293."YReplace the type specification in this constructor call with the diamond operator ("<>").(€çˆúÿÿÿÿ
+n
+java:S2293A"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ê‰i
+n
+java:S2293A"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ê‰i
+a
+java:S1192I"FDefine a constant instead of duplicating this literal "check" 3 times.(‹ïìùÿÿÿÿ
+o
+java:S11041"TMake msgData1 a static final constant or non-public and provide accessors if needed.(ëÄèßùÿÿÿÿ
+j	java:S116."PRename this field "Array" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(€çˆúÿÿÿÿ
+X
+java:S16593"BDeclare "train" and all following declarations on a separate line.(øìº´
+q
+java:S14500"VRemove the "etData1" field and declare it as a local variable in the relevant methods.(ÆêÒ‰úÿÿÿÿ
+r
+java:S1450&"\Remove the "mFirebaseAuth" field and declare it as a local variable in the relevant methods.(ûºÙ
+q
+java:S1450/"VRemove the "sdData1" field and declare it as a local variable in the relevant methods.(ìøÚºşÿÿÿÿ
+P
+java:S62133":Rename this variable to not match a restricted identifier.(øìº´
+—
+java:S1186\"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
+œ
+java:S1186k"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(»†ãˆıÿÿÿÿ
+œ
+java:S1186p"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ø½šÑıÿÿÿÿ
+—
+java:S1186u"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÍâÔÇ
+–
+java:S1186z"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ßªŞ
+—
+java:S1186~"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
+9
+java:S1128"Remove this duplicated import.(°şÊóøÿÿÿÿ

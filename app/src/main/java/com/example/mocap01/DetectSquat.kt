@@ -294,4 +294,5 @@ class DetectSquat : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED) get_permissions()
     }
+
 }

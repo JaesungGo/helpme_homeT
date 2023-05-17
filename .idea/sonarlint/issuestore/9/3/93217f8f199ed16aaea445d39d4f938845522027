@@ -1,0 +1,19 @@
+
+C
+java:S16044"(Make this anonymous inner class a lambda(‚Ùßôúÿÿÿÿ
+=
+java:S1604)"(Make this anonymous inner class a lambda(½§ÆH
+C
+java:S1604E"(Make this anonymous inner class a lambda(·Îâ‰øÿÿÿÿ
+:
+java:S1659"$Declare "metPwd" on a separate line.(´ìı×
+=
+java:S1659"'Declare "mBtnLogin" on a separate line.(§Úçø
+n
+java:S1450"XRemove the "mBtnLogin" field and declare it as a local variable in the relevant methods.(§Úçø
+q
+java:S1450"[Remove the "mBtnRegister" field and declare it as a local variable in the relevant methods.(§Úçø
+v
+java:S1450"[Remove the "mDatabaseRef" field and declare it as a local variable in the relevant methods.(ŞÒœüÿÿÿÿ
+K
+java:S1068"0Remove this unused "mDatabaseRef" private field.(ŞÒœüÿÿÿÿ
