@@ -20,6 +20,7 @@
         android:layout_marginTop="150dp"
         android:layout_marginLeft="70dp"
         android:checked="false"
+        android:scaleType="fitCenter"
         android:src="@drawable/squat"/>
 
     <TextView
@@ -40,6 +41,7 @@
         android:layout_marginLeft="207dp"
         android:layout_marginTop="150dp"
         android:checked="false"
+        android:scaleType="fitCenter"
         android:src="@drawable/situp" />
 
     <TextView
@@ -60,6 +62,7 @@
         android:layout_marginBottom="-200dp"
         android:layout_marginLeft="70dp"
         android:checked="false"
+        android:scaleType="fitCenter"
         android:src="@drawable/pullup" />
 
     <TextView
@@ -81,6 +84,7 @@
         android:layout_alignBottom="@+id/squat"
         android:layout_marginBottom="-200dp"
         android:checked="false"
+        android:scaleType="fitCenter"
         android:src="@drawable/pushup" />
 
     <TextView
