@@ -29,8 +29,11 @@ import com.google.firebase.database.ValueEventListener;
 import android.os.Bundle;
 
 import java.net.HttpCookie;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class MypageActivity extends AppCompatActivity {
@@ -44,19 +47,17 @@ public class MypageActivity extends AppCompatActivity {
     private ListView listView2;
     private ArrayAdapter<String> adapter;
     List<Object> Array = new ArrayList<Object>();
-    private Button sdData1;
+    private Button buttondata;
     private EditText etData1;
-    public String msgData1;
 
-    ImageView home, train, record, mypage;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        setTheme(R.style.Theme_Mocap01);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
 
-        sdData1 = (Button)findViewById(R.id.button2);
+        buttondata = findViewById(R.id.button2);
         etData1 = (EditText)findViewById(R.id.editTextText2);
         listView2 = (ListView) findViewById(R.id.listView2);
 
@@ -68,13 +69,27 @@ public class MypageActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("UserAccount");
 
-        sdData1.setOnClickListener((v -> {
-            msgData1 = etData1.getText().toString();
-            mDatabaseRef.child(mFirebaseAuth.getUid()).child("check").push().child("count").setValue(msgData1);
-            Toast.makeText(MypageActivity.this,"업로드성공",Toast.LENGTH_SHORT).show();
-        }));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        String currentDateAndTime = sdf.format(new Date());
 
-        //mDatabaseRef = mFirebaseData.getReference("UserAccount"); // 변경값을 확인할 child 이름
+        buttondata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String exerciseCountStr = etData1.getText().toString();
+                mDatabaseRef.child(mFirebaseAuth.getUid()).child("check").child("Squat").child(currentDateAndTime).child("count").setValue(exerciseCountStr);
+                mDatabaseRef.child(mFirebaseAuth.getUid()).child("check").child("Push-up").child(currentDateAndTime).child("count").setValue(exerciseCountStr);
+                mDatabaseRef.child(mFirebaseAuth.getUid()).child("check").child("Chinning").child(currentDateAndTime).child("count").setValue(exerciseCountStr);
+                mDatabaseRef.child(mFirebaseAuth.getUid()).child("check").child("Sit-up").child(currentDateAndTime).child("count").setValue(exerciseCountStr);
+                Toast.makeText(MypageActivity.this, "운동 데이터가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+                //        buttondata.setOnClickListener((v -> {
+//            msgData1 = etData1.getText().toString();
+//            mDatabaseRef.child(mFirebaseAuth.getUid()).child("check").child("Squat").child(currentDateAndTime).child("count").setValue(etData1);
+//            Toast.makeText(MypageActivity.this,"업로드성공",Toast.LENGTH_SHORT).show();
+//        }));
+
         mDatabaseRef.child(mFirebaseAuth.getUid()).child("check").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
