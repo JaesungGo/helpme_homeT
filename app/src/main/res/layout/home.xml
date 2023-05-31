@@ -4,28 +4,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SlidingActivity">
+    tools:context=".SlidingActivity"
+    android:orientation="horizontal">
 
     <FrameLayout
         android:layout_marginTop="60dp"
         android:layout_marginLeft="5dp"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="300dp">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"/>
 
         <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:layout_centerHorizontal="true"/>
 
     </FrameLayout>
 
@@ -33,7 +36,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="200dp"
         android:layout_marginLeft="-405dp"
         android:layout_marginTop="400dp"
         android:padding="8dp" />
