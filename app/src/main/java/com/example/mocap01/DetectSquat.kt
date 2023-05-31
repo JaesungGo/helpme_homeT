@@ -213,18 +213,18 @@ class DetectSquat : AppCompatActivity() {
         // Firebase Authentication 인스턴스 초기화하기
         auth = FirebaseAuth.getInstance()
         // Firebase Realtime Database의 레퍼런스 객체 가져오기
-        database = FirebaseDatabase.getInstance().reference
+        database = FirebaseDatabase.getInstance().getReference("UserAccount");
         // 현재 로그인된 사용자의 ID 가져오기
         val userId = auth.currentUser?.uid
         // ActiveValue 값을 저장할 사용자 노드 생성하기
         if (userId != null) {
-            userRef = database.child("users").child(userId)
+            userRef = database.child("$userId").child("Check2")
         }
         // 오늘 날짜에 해당하는 노드에 ActiveValue 값을 업로드하기
         val calendar = Calendar.getInstance()
-        val today = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.time)
+        val today = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(calendar.time)
         val activeValue = "$squats" // 새로운 ActiveValue 값
-        val squatsRef = userRef.child("$squats").child(today)
+        val squatsRef = userRef.child("Squat").child(today)
 
         // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
         squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
