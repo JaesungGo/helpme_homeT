@@ -11,20 +11,20 @@
         android:id="@+id/today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
+        android:textSize="30sp"
         android:text="오늘 날짜"
-        android:textSize="30sp" />
+        android:layout_alignParentTop="@+id/calendarView"
+        android:layout_margin="40dp"
+        android:layout_centerHorizontal="true"/>
 
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_centerVertical="false"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="130dp"
-        android:clickable="true"
-        android:focusable="true"/>
+        />
 
     <TextView
         android:id="@+id/exercise"
@@ -37,16 +37,16 @@
         android:text="운동량 : "
         android:textSize="30sp" />
 
-<!--    <ListView-->
-<!--        android:id="@+id/listView2"-->
-<!--        android:layout_width="186dp"-->
-<!--        android:layout_height="249dp"-->
-<!--        android:layout_below="@+id/calendarView"-->
-<!--        android:layout_marginStart="22dp"-->
-<!--        android:layout_marginTop="31dp"-->
-<!--        android:layout_toEndOf="@+id/exercise"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        tools:layout_editor_absoluteX="0dp" />-->
+    <ListView
+        android:id="@+id/listView2"
+        android:layout_width="186dp"
+        android:layout_height="249dp"
+        android:layout_below="@+id/calendarView"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="31dp"
+        android:layout_toEndOf="@+id/exercise"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
 
 </RelativeLayout>
