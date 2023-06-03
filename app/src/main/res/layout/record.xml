@@ -8,6 +8,22 @@
 
 
     <TextView
+        android:id="@+id/dataTextView"
+        android:layout_width="129dp"
+        android:layout_height="114dp"
+        android:layout_below="@+id/calendarView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="95dp"
+        android:layout_marginEnd="17dp"
+        android:layout_toStartOf="@+id/listView2"
+        android:padding="16dp"
+        android:text="총합"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,8 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/calendarView"
-        android:layout_marginBottom="-89dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginBottom="-78dp"
         android:gravity="left"
         android:text="운동량 : "
         android:textSize="30sp" />
@@ -42,7 +58,7 @@
         android:layout_width="186dp"
         android:layout_height="249dp"
         android:layout_below="@+id/calendarView"
-        android:layout_marginStart="22dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="31dp"
         android:layout_toEndOf="@+id/exercise"
         app:layout_constraintBottom_toBottomOf="parent"
