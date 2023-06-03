@@ -1,0 +1,23 @@
+
+W
+java:S2259y"BA "NullPointerException" could be thrown; "item" is nullable here.(¶¬æ9
+J
+java:S1874;"/Remove this use of "execute"; it is deprecated.(ŠŠŠßúÿÿÿÿ
+G
+java:S1874A"1Remove this use of "AsyncTask"; it is deprecated.(Ñ³û…
+m
+java:S3776E"RRefactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.(µ…´åúÿÿÿÿ
+[
+java:S2147"ECombine this catch with the one at line 143, which has the same body.(ª“ü
+7	java:S131Y""Add a default case to this switch.(İµß¶
+N
+java:S1874"7Remove this use of "publishProgress"; it is deprecated.(Ù¨Êß
+f
+java:S1874˜"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¨ıÁüÿÿÿÿ
+O
+java:S1874™"8Remove this use of "onProgressUpdate"; it is deprecated.(ü…×ò
+f
+java:S1874¤"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Í¶ËŞùÿÿÿÿ
+L
+java:S1874¥"5Remove this use of "onPostExecute"; it is deprecated.(Ü«Š„
+W	java:S125©"<This block of commented-out lines of code should be removed.(¼†ûÿÿÿÿÿ
