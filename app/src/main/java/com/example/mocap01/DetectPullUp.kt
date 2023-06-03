@@ -8,6 +8,8 @@ import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -19,6 +21,12 @@ import android.view.TextureView
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.mocap01.ml.LiteModelMovenetSingleposeThunderTfliteFloat164
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
@@ -28,6 +36,14 @@ import java.lang.System.currentTimeMillis
 import java.util.*
 
 class DetectPullUp : AppCompatActivity() {
+
+    // Firebase Authentication 인스턴스 가져오기
+    private lateinit var auth: FirebaseAuth
+    // Firebase Realtime Database 레퍼런스 객체 가져오기
+    private lateinit var database: DatabaseReference
+    // ActiveValue 값을 저장할 사용자 노드 생성하기
+    private lateinit var userRef: DatabaseReference
+    // ActiveValue 값 업데이트에 사용될 변수들 선언하기
 
     // 정확도 , 쿨다운 시간
     private val COOLDOWN_TIME_MS = 2500L
@@ -296,6 +312,39 @@ class DetectPullUp : AppCompatActivity() {
                 imageView.setImageBitmap(mutable)
             }
         }
+        // Firebase Authentication 인스턴스 초기화하기
+        auth = FirebaseAuth.getInstance()
+        // Firebase Realtime Database의 레퍼런스 객체 가져오기
+        database = FirebaseDatabase.getInstance().reference
+        // 현재 로그인된 사용자의 ID 가져오기
+        val userId = auth.currentUser?.uid
+        // ActiveValue 값을 저장할 사용자 노드 생성하기
+        if (userId != null) {
+            userRef = database.child("UserAccount").child(userId)
+        }
+        // 오늘 날짜에 해당하는 노드에 ActiveValue 값을 업로드하기
+        val calendar = Calendar.getInstance()
+        val today = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).format(calendar.time)
+        val today2 = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
+        val activeValue = "$pull_ups" // 새로운 ActiveValue 값
+        val squatsRef = userRef.child("Check2").child(today).child("Pullup").child(today2)
+
+        // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
+        squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    val prevCount = snapshot.getValue(Int::class.java) ?: 0
+                    val totalCount = prevCount + pull_ups
+                    squatsRef.setValue(totalCount)
+                }else {
+                    // 해당 날짜에 해당하는 노드가 존재하지 않는 경우
+                    squatsRef.setValue(activeValue)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Failed to check if node exists: $error")
+            }
+        })
     }
 
     override fun onDestroy() {

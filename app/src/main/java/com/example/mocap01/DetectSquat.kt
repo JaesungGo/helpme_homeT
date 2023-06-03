@@ -8,8 +8,8 @@ import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
-import android.hardware.camera2.CaptureRequest
-import androidx.appcompat.app.AppCompatActivity
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -19,7 +19,14 @@ import android.view.Surface
 import android.view.TextureView
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mocap01.ml.LiteModelMovenetSingleposeThunderTfliteFloat164
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
@@ -30,10 +37,19 @@ import java.util.*
 
 class DetectSquat : AppCompatActivity() {
 
+    // Firebase Authentication 인스턴스 가져오기
+    private lateinit var auth: FirebaseAuth
+    // Firebase Realtime Database 레퍼런스 객체 가져오기
+    private lateinit var database: DatabaseReference
+    // ActiveValue 값을 저장할 사용자 노드 생성하기
+    private lateinit var userRef: DatabaseReference
+    // ActiveValue 값 업데이트에 사용될 변수들 선언하기
+
     // 스쿼트 정확도 , 쿨다운 시간 , 최근 스쿼트 타임을 정의
     private val COOLDOWN_TIME_MS = 2500L
     private var lastSquatTime = 0L
     private var squats = 0
+    private var squatcount = 0
 
     // 안드로이드 파일 관련 정의
     val paint = Paint()
@@ -96,11 +112,11 @@ class DetectSquat : AppCompatActivity() {
                 var x = 0
                 var circles = FloatArray(34)
                 val BODY_PARTS = arrayOf(
-                    "nose","left_eye","right_eye","left_ear","right_ear",
+                    "nose", "left_eye", "right_eye", "left_ear", "right_ear",
                     "left_shoulder", "right_shoulder",
                     "left_elbow", "right_elbow",
                     "left_wrist", "right_wrist",
-                    "left_hip" , "right_hip",
+                    "left_hip", "right_hip",
                     "left_knee", "right_knee",
                     "left_ankle", "right_ankle"
                 )
@@ -179,23 +195,23 @@ class DetectSquat : AppCompatActivity() {
                 val lefteyeX = circles[2 * LEFT_EYE]
                 val lefteyeY = circles[2 * LEFT_EYE + 1]
                 val righteyeX = circles[2 * RIGHT_EYE]
-                val righteyeY = circles[2 * RIGHT_EYE +1]
+                val righteyeY = circles[2 * RIGHT_EYE + 1]
                 val leftearX = circles[2 * LEFT_EAR]
                 val leftearY = circles[2 * LEFT_EAR + 1]
                 val rightearX = circles[2 * RIGHT_EAR]
                 val rightearY = circles[2 * RIGHT_EAR + 1]
-                val leftelbowX = circles[2*LEFT_ELBOW]
-                val leftelbowY = circles[2*LEFT_ELBOW+1]
-                val rightelbowX = circles[2*RIGHT_ELBOW]
-                val rightelbowY = circles[2*RIGHT_ELBOW+1]
-                val leftwristX = circles[2*LEFT_WRIST]
-                val leftwristY = circles[2*LEFT_WRIST+1]
-                val rightwristX = circles[2*RIGHT_WRIST]
-                val rightwristY = circles[2*RIGHT_WRIST+1]
+                val leftelbowX = circles[2 * LEFT_ELBOW]
+                val leftelbowY = circles[2 * LEFT_ELBOW + 1]
+                val rightelbowX = circles[2 * RIGHT_ELBOW]
+                val rightelbowY = circles[2 * RIGHT_ELBOW + 1]
+                val leftwristX = circles[2 * LEFT_WRIST]
+                val leftwristY = circles[2 * LEFT_WRIST + 1]
+                val rightwristX = circles[2 * RIGHT_WRIST]
+                val rightwristY = circles[2 * RIGHT_WRIST + 1]
                 val leftShoulderX = circles[2 * LEFT_SHOULDER_INDEX]
                 val leftShoulderY = circles[2 * LEFT_SHOULDER_INDEX + 1]
-                val rightShoulderX = circles[2* RIGHT_SHOULDER_INDEX]
-                val rightShoulderY = circles[2* RIGHT_SHOULDER_INDEX+1]
+                val rightShoulderX = circles[2 * RIGHT_SHOULDER_INDEX]
+                val rightShoulderY = circles[2 * RIGHT_SHOULDER_INDEX + 1]
                 val leftAnkleX = circles[2 * LEFT_ANKLE_INDEX]
                 val leftAnkleY = circles[2 * LEFT_ANKLE_INDEX + 1]
                 val leftKneeX = circles[2 * LEFT_KNEE_INDEX]
@@ -236,26 +252,30 @@ class DetectSquat : AppCompatActivity() {
                 val LshoulderSlope = (leftHipY - leftShoulderY) / (leftHipX - leftShoulderX)
                 val RshoulderSlope = (rightHipY - rightShoulderY) / (rightHipX - rightShoulderX)
 
-                val Lsangle = Math.atan(((LshoulderSlope - LkneeHipSlope) / (1 + LkneeHipSlope * LshoulderSlope)).toDouble())
+                val Lsangle =
+                    Math.atan(((LshoulderSlope - LkneeHipSlope) / (1 + LkneeHipSlope * LshoulderSlope)).toDouble())
                 var LshoulderInDegrees = Math.toDegrees(Lsangle)
                 if (LshoulderInDegrees < 0) {
                     LshoulderInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
                 }
 
-                val Rsangle = Math.atan(((RshoulderSlope - RkneeHipSlope) / (1 + RkneeHipSlope * RshoulderSlope)).toDouble())
+                val Rsangle =
+                    Math.atan(((RshoulderSlope - RkneeHipSlope) / (1 + RkneeHipSlope * RshoulderSlope)).toDouble())
                 var RshoulderInDegrees = Math.toDegrees(Rsangle)
                 if (RshoulderInDegrees < 0) {
                     RshoulderInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
                 }
 
 
-                val Langle = Math.atan(((LkneeHipSlope - LankleKneeSlope) / (1 + LankleKneeSlope * LkneeHipSlope)).toDouble())
+                val Langle =
+                    Math.atan(((LkneeHipSlope - LankleKneeSlope) / (1 + LankleKneeSlope * LkneeHipSlope)).toDouble())
                 var LangleInDegrees = Math.toDegrees(Langle)
                 if (LangleInDegrees < 0) {
                     LangleInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
                 }
 
-                val Rangle = Math.atan(((LkneeHipSlope - LankleKneeSlope) / (1 + LankleKneeSlope * LkneeHipSlope)).toDouble())
+                val Rangle =
+                    Math.atan(((LkneeHipSlope - LankleKneeSlope) / (1 + LankleKneeSlope * LkneeHipSlope)).toDouble())
                 var RangleInDegrees = Math.toDegrees(Rangle)
                 if (RangleInDegrees < 0) {
                     RangleInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
@@ -273,14 +293,16 @@ class DetectSquat : AppCompatActivity() {
 
 
                 var allNonZero = false
-                if(leftShoulderX != 0f && leftShoulderY != 0f && rightShoulderX != 0f && rightShoulderY != 0f && leftAnkleX != 0f && leftAnkleY != 0f &&
-                    leftKneeX != 0f && leftKneeY != 0f && leftHipX != 0f && leftHipY != 0f && rightAnkleX != 0f && rightAnkleY != 0f && rightKneeX != 0f && rightKneeY != 0f && rightHipX != 0f && rightHipY != 0f){
+                if (leftShoulderX != 0f && leftShoulderY != 0f && rightShoulderX != 0f && rightShoulderY != 0f && leftAnkleX != 0f && leftAnkleY != 0f &&
+                    leftKneeX != 0f && leftKneeY != 0f && leftHipX != 0f && leftHipY != 0f && rightAnkleX != 0f && rightAnkleY != 0f && rightKneeX != 0f && rightKneeY != 0f && rightHipX != 0f && rightHipY != 0f
+                ) {
                     allNonZero = true
                 }
 
                 val currentTime = currentTimeMillis()
-                if (currentTime - lastSquatTime >= COOLDOWN_TIME_MS && 140>= LangleInDegrees &&
-                    140>= RangleInDegrees && 60<=LshoulderInDegrees && 60<= RshoulderInDegrees && allNonZero ) {
+                if (currentTime - lastSquatTime >= COOLDOWN_TIME_MS && 140 >= LangleInDegrees &&
+                    140 >= RangleInDegrees && 60 <= LshoulderInDegrees && 60 <= RshoulderInDegrees && allNonZero
+                ) {
                     squats++ // 스쿼트 횟수 증가
                     lastSquatTime = currentTime // 마지막 스쿼트 시간 업데이트
                     Log.d(TAG, "Number of squats: $squats")
@@ -297,6 +319,41 @@ class DetectSquat : AppCompatActivity() {
                 imageView.setImageBitmap(mutable)
             }
         }
+        // Firebase Authentication 인스턴스 초기화하기
+        auth = FirebaseAuth.getInstance()
+        // Firebase Realtime Database의 레퍼런스 객체 가져오기
+        database = FirebaseDatabase.getInstance().reference
+        // 현재 로그인된 사용자의 ID 가져오기
+        val userId = auth.currentUser?.uid
+        // ActiveValue 값을 저장할 사용자 노드 생성하기
+        if (userId != null) {
+            userRef = database.child("UserAccount").child(userId)
+        }
+        // 오늘 날짜에 해당하는 노드에 ActiveValue 값을 업로드하기
+        val calendar = Calendar.getInstance()
+        val today = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).format(calendar.time)
+        val today2 = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
+        val activeValue = "$squats" // 새로운 ActiveValue 값
+        val squatsRef = userRef.child("Check2").child(today).child("Squat").child(today2)
+
+        // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
+        squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    val prevCount = snapshot.getValue(Int::class.java) ?: 0
+                    val totalCount = prevCount + squats
+                    squatsRef.setValue(totalCount)
+                }else {
+                    // 해당 날짜에 해당하는 노드가 존재하지 않는 경우
+                    squatsRef.setValue(activeValue)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Failed to check if node exists: $error")
+            }
+        })
+        // 해당 날짜에 해당하는 노드가 이미 있으면 값을 업데이트
+        //squatsRef.setValue(activeValue)
     }
 
     override fun onDestroy() {

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:286432018557:android:2ab5a8b25945e70ef43114",
+        "mobilesdk_app_id": "1:286432018557:android:8a2841935bcba65ef43114",
         "android_client_info": {
-          "package_name": "com.example.hometraining2"
+          "package_name": "com.example.mopcap1"
         }
       },
       "oauth_client": [
