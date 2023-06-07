@@ -94,7 +94,7 @@ public class Mypage01 extends Fragment {
     private void saveChanges() {
         final String name = mNameEditText.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(getActivity(), "Please enter a name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "이름을 입력해주세요", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -119,7 +119,7 @@ public class Mypage01 extends Fragment {
                     saveUserChanges(name);
                 });
             }).addOnFailureListener(e -> {
-                Toast.makeText(getActivity(), "Failed to upload profile image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "이미지 업로드에 실패햐였습니다", Toast.LENGTH_SHORT).show();
             });
         } else {
             // 프로필 사진 변경이 없는 경우
@@ -134,10 +134,10 @@ public class Mypage01 extends Fragment {
         User user = new User(uid, mUser.getEmail(), name, mProfileImageUrl);
         mDatabaseRef.child(uid).setValue(user)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getActivity(), "Profile saved successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "프로필이 성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getActivity(), "Failed to save profile", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "프로필 저장에 실패하였습니다", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -168,7 +168,7 @@ public class Mypage01 extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Failed to load user profile", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "유저 정보 불러오기 실패", Toast.LENGTH_SHORT).show();
             }
         });
     }

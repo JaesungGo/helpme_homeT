@@ -57,10 +57,6 @@ public class MypageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
 
-        buttondata = findViewById(R.id.button2);
-        etData1 = (EditText)findViewById(R.id.editTextText2);
-        listView2 = (ListView) findViewById(R.id.listView2);
-
         initDatabase();
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, new ArrayList<String>());

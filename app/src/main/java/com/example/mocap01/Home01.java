@@ -1,6 +1,7 @@
 package com.example.mocap01;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import com.example.mocap01.MyAdapter02;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +34,7 @@ import me.relex.circleindicator.CircleIndicator3;
 public class Home01 extends Fragment {
 
 
+    private Button communityButton;
     private ViewPager2 mPager;
     private FragmentStateAdapter pagerAdapter;
     private CircleIndicator3 mIndicator;
@@ -44,6 +47,7 @@ public class Home01 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home, container, false);
 
+
         // ViewPager2 초기화 및 어댑터 설정
         mPager = rootView.findViewById(R.id.viewpager);
         pagerAdapter = new MyAdapter(getActivity(), 4);
@@ -54,25 +58,22 @@ public class Home01 extends Fragment {
         mIndicator.setViewPager(mPager);
         mIndicator.createIndicators(4, 0);
 
-        recyclerView = rootView.findViewById(R.id.recycler);
-        adapter = new MyAdapter02(items, getContext());
-        recyclerView.setAdapter(adapter);
+        // community 버튼 초기화
+        communityButton = rootView.findViewById(R.id.community);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        // community 버튼 클릭 이벤트 처리
+        communityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // CommunityActivity 실행
+                Intent intent = new Intent(getActivity(), CommunityActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        readRss();
+
 
         return rootView;
-    }
-    void readRss() {
-        try {
-            URL url = new URL("http://rss.hankyung.com/new/news_main.xml");
-            NewsActivity.RssFeedTask task = new NewsActivity.RssFeedTask();
-            task.execute(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 
     }

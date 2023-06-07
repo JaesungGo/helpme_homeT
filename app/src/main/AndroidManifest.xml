@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,9 +19,20 @@
         android:theme="@style/Theme.Mocap01"
         tools:targetApi="31">
         <activity
+            android:name=".PostDetailActivity"
+            />
+        <activity
+            android:name=".CreatePostActivity"
+            />
+        <activity
             android:name=".Record"
             android:exported="true"
             />
+        <activity
+            android:name=".CommunityActivity"
+            android:label="Community Activity">
+        </activity>
+
         <activity
             android:name=".Exercise01"
             android:exported="false"
@@ -52,7 +66,7 @@
             android:name=".MypageActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".RegisterActivity02"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -61,7 +75,7 @@
             android:name=".DetectSquat"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginActivity02"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
