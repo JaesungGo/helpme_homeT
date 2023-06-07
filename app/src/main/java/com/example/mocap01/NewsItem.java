@@ -11,7 +11,7 @@ public class NewsItem {
     public NewsItem() { //혹시 몰라서 매개변수가 없는 것도 만들었다.
     }
 
-    public NewsItem(String title, String link, String desc, String imgUrl, String date) {
+    public NewsItem (String title, String link, String desc, String imgUrl, String date) {
         this.title = title;
         this.link = link;
         this.desc = desc;

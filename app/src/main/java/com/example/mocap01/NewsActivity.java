@@ -25,9 +25,9 @@ public class NewsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
-    ArrayList<NewsItem> items= new ArrayList<>();
+    static ArrayList<NewsItem> items= new ArrayList<>();
 
-    MyAdapter02 adapter;
+    static MyAdapter02 adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,7 @@ public class NewsActivity extends AppCompatActivity {
     }// readRss Method ..
 
     //이너 클래스
-    class RssFeedTask extends AsyncTask<URL, Void, String>{
+    static class RssFeedTask extends AsyncTask<URL, Void, String>{
 
         //Thread의 run()메소드와 같은 역할
         @Override
@@ -160,9 +160,9 @@ public class NewsActivity extends AppCompatActivity {
         //doInBackground메소드가 종료된 후
         //UI작업을 위해 자동 실행되는 메소드
         //runOnUiThread()와 비슷한 역할
-        @Override
-        protected void onPostExecute(String s) { //매개 변수 s에 들어오는 값음 doIBackground()의 return 값이다.
-            super.onPostExecute(s);
+        //@Override
+        //protected void onPostExecute(String s) { //매개 변수 s에 들어오는 값음 doIBackground()의 return 값이다.
+            //super.onPostExecute(s);
 
             //리사이클러에서 보여주는 데이터를 가진
             //아답터에게 데이터가 변경되었다고 공지
@@ -170,7 +170,7 @@ public class NewsActivity extends AppCompatActivity {
 
 
             //이 메소드 안에서는 UI변경 작업 가능
-            Toast.makeText(NewsActivity.this, s+":"+items.size(), Toast.LENGTH_SHORT).show();
-        }
+            //Toast.makeText(NewsActivity.this, s+":"+items.size(), Toast.LENGTH_SHORT).show();
+        //}
     }//RssFeedTask class
 }//MainActivity class ..

@@ -4,38 +4,71 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SlidingActivity">
+    tools:context=".SlidingActivity"
+    android:orientation="horizontal">
 
     <FrameLayout
         android:layout_marginTop="60dp"
         android:layout_marginLeft="5dp"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="300dp">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"/>
 
         <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:layout_centerHorizontal="true"/>
 
     </FrameLayout>
 
+    <Button
+        android:id="@+id/community"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:text="커뮤니티로 이동"
+        android:textSize="30dp"
+        android:layout_marginLeft="-400dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="@+id/viewpager"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="@+id/viewpager"
+        app:layout_constraintTop_toBottomOf="@+id/viewpager"/>
+
+    <!--
+    <Button
+        android:id="@+id/news"
+        android:layout_width="346dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="-345dp"
+        android:layout_marginTop="160dp"
+        android:text="뉴스 페이지로 이동"
+        android:textSize="30dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="@+id/community"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="@+id/community"
+        app:layout_constraintTop_toBottomOf="@+id/community" />
+    -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginLeft="-405dp"
-        android:layout_marginTop="400dp"
-        android:padding="8dp" />
+        android:layout_height="match_parent"/>
+
+
 
 </LinearLayout>

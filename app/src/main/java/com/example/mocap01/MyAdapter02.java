@@ -11,13 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.mocap01.NewsItem;
+import com.example.mocap01.R;
 
 import java.util.ArrayList;
 
-public class MyAdapter02 extends RecyclerView.Adapter {
+public class MyAdapter02 extends RecyclerView.Adapter<MyAdapter02.ViewHolder> {
 
-    ArrayList<NewsItem> items;
-    Context context;
+    private ArrayList<NewsItem> items;
+    private Context context;
 
     public MyAdapter02(ArrayList<NewsItem> items, Context context) {
         this.items = items;
@@ -26,37 +28,24 @@ public class MyAdapter02 extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View itemView= LayoutInflater.from(context).inflate(R.layout.recycler_item,parent,false);
-
-        VH vh= new VH(itemView);
-        return vh;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        VH vh= (VH)holder;
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        NewsItem item = items.get(position);
 
-        //현재번째(position) 아이템 얻어오기
-        NewsItem item= items.get(position);
-        vh.tvTitle.setText(item.getTitle());
-        vh.tvDesc.setText(item.getDesc());
-        vh.tvDate.setText(item.getDate());
+        holder.titleTextView.setText(item.getTitle());
+        holder.descTextView.setText(item.getDesc());
+        holder.dateTextView.setText(item.getDate());
 
-        //이미지는 없을 수도 있음.
-        if(item.getImgUrl()==null){
-            vh.iv.setVisibility(View.GONE);
-        }else{
-            vh.iv.setVisibility(View.VISIBLE);
-            //네트워크에 있는 이미지를 보여주려면
-            //별도의 Thread가 필요한데 이를 편하게
-            //해주는 Library사용(Glide library)
-
-            Glide.with(context).load(item.getImgUrl()).into(vh.iv);
-
-        }
-
+        // 이미지 로드
+        Glide.with(context)
+                .load(item.getImgUrl())
+                .placeholder(R.mipmap.ic_launcher)
+                .into(holder.imageView);
     }
 
     @Override
@@ -64,19 +53,18 @@ public class MyAdapter02 extends RecyclerView.Adapter {
         return items.size();
     }
 
-    //이너클래스
-    class VH extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView titleTextView;
+        TextView descTextView;
+        TextView dateTextView;
+        ImageView imageView;
 
-        TextView tvTitle, tvDesc, tvDate;
-        ImageView iv;
-
-        public VH(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            tvTitle=itemView.findViewById(R.id.tv_title);
-            tvDesc=itemView.findViewById(R.id.tv_desc);
-            tvDate=itemView.findViewById(R.id.tv_date);
-            iv=itemView.findViewById(R.id.iv);
+            titleTextView = itemView.findViewById(R.id.tv_title);
+            descTextView = itemView.findViewById(R.id.tv_desc);
+            dateTextView = itemView.findViewById(R.id.tv_date);
+            imageView = itemView.findViewById(R.id.iv);
         }
     }
 }
