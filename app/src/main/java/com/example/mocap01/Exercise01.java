@@ -20,12 +20,36 @@ public class Exercise01 extends Fragment {
 
         // Find the squat button in exercise.xml
         ImageButton squatButton = view.findViewById(R.id.squat);
+        ImageButton pullupButton = view.findViewById(R.id.pullup);
+        ImageButton pushupButton = view.findViewById(R.id.pushup);
+        ImageButton situpButton = view.findViewById(R.id.situp);
 
         // Set a click listener for the squat button
         squatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SquatActivity.class);
+                startActivity(intent);
+            }
+        });
+        pullupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PullUpActivity.class);
+                startActivity(intent);
+            }
+        });
+        pushupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PushUpActivity.class);
+                startActivity(intent);
+            }
+        });
+        situpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SitUpActivity.class);
                 startActivity(intent);
             }
         });

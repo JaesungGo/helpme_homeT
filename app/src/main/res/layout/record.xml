@@ -31,12 +31,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/calendarView"
-        android:layout_marginBottom="-89dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginBottom="-83dp"
         android:gravity="left"
-        android:text="스쿼트 : "
+        android:text="운동량 : "
         android:textSize="30sp" />
 
+    <TextView
+        android:id="@+id/dataTextView"
+        android:layout_width="202dp"
+        android:layout_height="233dp"
+        android:layout_below="@+id/calendarView"
+
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="47dp"
+        android:layout_toEndOf="@+id/exercise"
+        android:text="총합"
+        android:textSize="20sp" />
 
 
 </RelativeLayout>

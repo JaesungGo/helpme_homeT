@@ -3,10 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,10 +15,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mocap01"
         tools:targetApi="31">
-        <activity android:name=".NewsActivity"
-            android:exported="true"/>
-        <activity android:name=".SlidingActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".Record"
+            android:exported="true"
+            />
+        <activity
+            android:name=".Exercise01"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".DetectSitUp"
+            android:exported="false" />
+        <activity
+            android:name=".SitUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetectPullUp"
+            android:exported="false" />
+        <activity
+            android:name=".PullUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetectPushUp"
+            android:exported="false" />
+        <activity
+            android:name=".PushUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewsActivity"
+            android:exported="true" />
         <activity
             android:name=".SquatActivity"
             android:exported="false" />
@@ -29,7 +52,7 @@
             android:name=".MypageActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity02"
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -38,10 +61,11 @@
             android:name=".DetectSquat"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity02"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
