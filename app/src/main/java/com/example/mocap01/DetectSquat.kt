@@ -225,25 +225,6 @@ class DetectSquat : AppCompatActivity() {
                 val rightHipX = circles[2 * RIGHT_HIP_INDEX]
                 val rightHipY = circles[2 * RIGHT_HIP_INDEX + 1]
 
-//                Log.d(TAG, "Nose: X=$noseX, Y=$noseY")
-//                Log.d(TAG, "Left Eye: X=$lefteyeX, Y=$lefteyeY")
-//                Log.d(TAG, "Right Eye: X=$righteyeX, Y=$righteyeY")
-//                Log.d(TAG, "Left Ear: X=$leftearX, Y=$leftearY")
-//                Log.d(TAG, "Right Ear: X=$rightearX, Y=$rightearY")
-//                Log.d(TAG, "Left Elbow: X=$leftelbowX, Y=$leftelbowY")
-//                Log.d(TAG, "Right Elbow: X=$rightelbowX, Y=$rightelbowY")
-//                Log.d(TAG, "Left Wrist: X=$leftwristX, Y=$leftwristY")
-//                Log.d(TAG, "Right Wrist: X=$rightwristX, Y=$rightwristY")
-//                Log.d(TAG, "Left Shoulder: X=$leftShoulderX, Y=$leftShoulderY")
-//                Log.d(TAG, "Right Shoulder: X=$rightShoulderX, Y=$rightShoulderY")
-//                Log.d(TAG, "Left Ankle: X=$leftAnkleX, Y=$leftAnkleY")
-//                Log.d(TAG, "Left Knee: X=$leftKneeX, Y=$leftKneeY")
-//                Log.d(TAG, "Left Hip: X=$leftHipX, Y=$leftHipY")
-//                Log.d(TAG, "Right Ankle: X=$rightAnkleX, Y=$rightAnkleY")
-//                Log.d(TAG, "Right Knee: X=$rightKneeX, Y=$rightKneeY")
-//                Log.d(TAG, "Right Hip: X=$rightHipX, Y=$rightHipY")
-
-
                 val LankleKneeSlope = (leftAnkleY - leftKneeY) / (leftAnkleX - leftKneeX)
                 val LkneeHipSlope = (leftKneeY - leftHipY) / (leftKneeX - leftHipX)
                 val RankleKneeSlope = (rightAnkleY - rightKneeY) / (rightAnkleX - rightKneeX)
@@ -281,17 +262,6 @@ class DetectSquat : AppCompatActivity() {
                     RangleInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
                 }
 
-
-//                val angleView = findViewById<TextView>(R.id.angleView)
-//                val kneeView = findViewById<TextView>(R.id.anklekneeView)
-//                val hipView = findViewById<TextView>(R.id.kneehipview)
-
-
-//                angleView.text = "왼덩이: $leftHipY "
-//                kneeView.text = "어깨 각도 : $LshoulderInDegrees"
-//                hipView.text = "다리 각도 : $LangleInDegrees"
-
-
                 var allNonZero = false
                 if (leftShoulderX != 0f && leftShoulderY != 0f && rightShoulderX != 0f && rightShoulderY != 0f && leftAnkleX != 0f && leftAnkleY != 0f &&
                     leftKneeX != 0f && leftKneeY != 0f && leftHipX != 0f && leftHipY != 0f && rightAnkleX != 0f && rightAnkleY != 0f && rightKneeX != 0f && rightKneeY != 0f && rightHipX != 0f && rightHipY != 0f
@@ -315,45 +285,42 @@ class DetectSquat : AppCompatActivity() {
                 val squatsTextView = findViewById<TextView>(R.id.squatsTextView)
                 squatsTextView.text = "현재 스쿼트 개수: $squats"
 
+                // Firebase Authentication 인스턴스 초기화하기
+                auth = FirebaseAuth.getInstance()
+                // Firebase Realtime Database의 레퍼런스 객체 가져오기
+                database = FirebaseDatabase.getInstance().reference
+                // 현재 로그인된 사용자의 ID 가져오기
+                val userId = auth.currentUser?.uid
+                // ActiveValue 값을 저장할 사용자 노드 생성하기
+                if (userId != null) {
+                    userRef = database.child("UserAccount").child(userId)
+                }
+                // 오늘 날짜에 해당하는 노드에 ActiveValue 값을 업로드하기
+                val calendar = Calendar.getInstance()
+                val today =
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+                val today2 = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
+                val squatsRef = userRef.child("Check2").child(today).child("Squat").child(today2)
 
+                // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
+                squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (!snapshot.exists()) {
+                            val prevCount = snapshot.getValue(Int::class.java) ?: 0
+                            val totalCount = prevCount + squats
+                            squatsRef.setValue(totalCount)
+                        } else {
+                            // 해당 날짜에 해당하는 노드가 존재하지 않는 경우
+                            squatsRef.setValue(squats)
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(TAG, "Failed to check if node exists: $error")
+                    }
+                })
                 imageView.setImageBitmap(mutable)
             }
         }
-        // Firebase Authentication 인스턴스 초기화하기
-        auth = FirebaseAuth.getInstance()
-        // Firebase Realtime Database의 레퍼런스 객체 가져오기
-        database = FirebaseDatabase.getInstance().reference
-        // 현재 로그인된 사용자의 ID 가져오기
-        val userId = auth.currentUser?.uid
-        // ActiveValue 값을 저장할 사용자 노드 생성하기
-        if (userId != null) {
-            userRef = database.child("UserAccount").child(userId)
-        }
-        // 오늘 날짜에 해당하는 노드에 ActiveValue 값을 업로드하기
-        val calendar = Calendar.getInstance()
-        val today = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).format(calendar.time)
-        val today2 = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
-        val activeValue = "$squats" // 새로운 ActiveValue 값
-        val squatsRef = userRef.child("Check2").child(today).child("Squat").child(today2)
-
-        // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
-        squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (!snapshot.exists()) {
-                    val prevCount = snapshot.getValue(Int::class.java) ?: 0
-                    val totalCount = prevCount + squats
-                    squatsRef.setValue(totalCount)
-                }else {
-                    // 해당 날짜에 해당하는 노드가 존재하지 않는 경우
-                    squatsRef.setValue(activeValue)
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Failed to check if node exists: $error")
-            }
-        })
-        // 해당 날짜에 해당하는 노드가 이미 있으면 값을 업데이트
-        //squatsRef.setValue(activeValue)
     }
 
     override fun onDestroy() {
