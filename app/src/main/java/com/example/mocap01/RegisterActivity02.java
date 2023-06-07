@@ -108,7 +108,7 @@ public class RegisterActivity02 extends AppCompatActivity {
                             }
                         });
                     } else {
-                        String profileImageUrl = "https://example.com/default_profile_image.jpg"; // 특정 이미지 URL로 대체
+                        String profileImageUrl = "https://firebasestorage.googleapis.com/v0/b/opencv-620cd.appspot.com/o/default_profile_image.png?alt=media&token=de5fdd6b-3695-4008-b32e-7b4b24e0f701&_gl=1*czy4xs*_ga*MjA3MjY0MjI0Ny4xNjc5OTY4MzYx*_ga_CW55HF8NVT*MTY4NjEyNDQ3MC4xNS4xLjE2ODYxMjQ1MTUuMC4wLjA."; // 특정 이미지 URL로 대체
                         saveUserToFirebase(email, pwd, profileImageUrl);
                     }
                 } else {
