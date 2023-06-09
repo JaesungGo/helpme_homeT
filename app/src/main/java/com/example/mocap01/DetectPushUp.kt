@@ -282,44 +282,43 @@ class DetectPushUp : AppCompatActivity() {
                 push_upsTextView.rotation = 90f
                 push_upsTextView.text = "현재 푸쉬업 개수: $push_ups"
 
-
-                // Firebase Authentication 인스턴스 초기화하기
-                auth = FirebaseAuth.getInstance()
-                // Firebase Realtime Database의 레퍼런스 객체 가져오기
-                database = FirebaseDatabase.getInstance().reference
-                // 현재 로그인된 사용자의 ID 가져오기
-                val userId = auth.currentUser?.uid
-                // ActiveValue 값을 저장할 사용자 노드 생성하기
-                if (userId != null) {
-                    userRef = database.child("UserAccount").child(userId)
-                }
-                // 오늘 날짜에 해당하는 노드에 ActiveValue 값을 업로드하기
-                val calendar = Calendar.getInstance()
-                val today = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).format(calendar.time)
-                val today2 = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
-                val activeValue = "$push_ups" // 새로운 ActiveValue 값
-                val squatsRef = userRef.child("Check2").child(today).child("Pushup").child(today2)
-
-                // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
-                squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (!snapshot.exists()) {
-                            val prevCount = snapshot.getValue(Int::class.java) ?: 0
-                            val totalCount = prevCount + push_ups
-                            squatsRef.setValue(totalCount)
-                        }else {
-                            // 해당 날짜에 해당하는 노드가 존재하지 않는 경우
-                            squatsRef.setValue(activeValue)
-                        }
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e(TAG, "Failed to check if node exists: $error")
-                    }
-                })
-
                 imageView.setImageBitmap(mutable)
             }
         }
+    }
+
+    // 뒤로가기 버튼 눌렀을 시 노드 생성 및 저장
+    override fun onBackPressed() {
+        super.onBackPressed()
+        // Firebase Authentication 인스턴스 초기화하기
+        auth = FirebaseAuth.getInstance()
+        // Firebase Realtime Database의 레퍼런스 객체 가져오기
+        database = FirebaseDatabase.getInstance().reference
+        // 현재 로그인된 사용자의 ID 가져오기
+        val userId = auth.currentUser?.uid
+        // ActiveValue 값을 저장할 사용자 노드 생성하기
+        if (userId != null) {
+            userRef = database.child("UserAccount").child(userId)
+        }
+        // 오늘 날짜에 해당하는 노드에 ActiveValue 값을 업로드하기
+        val calendar = Calendar.getInstance()
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+        val today2 = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
+        val activeValue = push_ups // 새로운 ActiveValue 값
+        val squatsRef = userRef.child("Check2").child(today).child("Squat").child(today2)
+
+        // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
+        squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    squatsRef.setValue(activeValue)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Failed to check if node exists: $error")
+            }
+        })
     }
 
     override fun onDestroy() {
