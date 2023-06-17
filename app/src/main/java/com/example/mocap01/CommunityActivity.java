@@ -50,7 +50,7 @@ public class CommunityActivity extends AppCompatActivity {
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
-                    mPostList.add(post);
+                    mPostList.add(0,post);
                 }
 
                 mAdapter.notifyDataSetChanged(); // 어댑터에 데이터 변경을 알림
@@ -67,6 +67,7 @@ public class CommunityActivity extends AppCompatActivity {
             Intent intent = new Intent(CommunityActivity.this, PostDetailActivity.class);
             intent.putExtra("title", post.getTitle());
             intent.putExtra("content", post.getContent());
+            intent.putExtra("name",post.getName());
             intent.putExtra("imageUrl", post.getImageUrl());
             startActivity(intent);
         });
@@ -114,6 +115,8 @@ public class CommunityActivity extends AppCompatActivity {
 
             return convertView;
         }
+
+
     }
 }
 

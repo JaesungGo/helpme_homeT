@@ -1,5 +1,7 @@
 package com.example.mocap01;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -8,28 +10,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-public class NewsItem {
-    //보통은 객체지향은 정보의 은닉을 해야하기 때문에, private으로 만든다.
-    String title;
-    String link;
-    String desc;
-    String imgUrl;
-    String date;
 
-    public NewsItem() { //혹시 몰라서 매개변수가 없는 것도 만들었다.
+public class NewsItem {
+    private String title;
+    private String link;
+    private String desc;
+    private String imgUrl;
+    private String date;
+
+    public NewsItem() {
     }
 
-    public NewsItem (String title, String link, String desc, String imgUrl, String date) {
+    public NewsItem(String title, String link, String desc, String imgUrl, String date) {
         this.title = title;
         this.link = link;
         this.desc = desc;
         this.imgUrl = imgUrl;
         this.date = date;
     }
-
-    //Getter & Setter Method..
-    //멤버 변수가 private이면 다른 곳에서 접근하기 위해 Getter & Setter Method 필요하다.
-    // 자동완성 Alt+Insert 에 Getter & Setter 있다.
 
     public String getTitle() {
         return title;
@@ -40,10 +38,12 @@ public class NewsItem {
     }
 
     public String getLink() {
+        Log.d("NewsItem", "getLink: " + link);
         return link;
     }
 
     public void setLink(String link) {
+        Log.d("NewsItem", "setLink: " + link);
         this.link = link;
     }
 
@@ -96,9 +96,10 @@ public class NewsItem {
                             currentNewsItem.setLink(parser.nextText());
                         } else if (tagName.equalsIgnoreCase("description")) {
                             currentNewsItem.setDesc(parser.nextText());
-                        } else if (tagName.equalsIgnoreCase("imgUrl")) {
-                            currentNewsItem.setImgUrl(parser.nextText());
-                        } else if (tagName.equalsIgnoreCase("date")) {
+                        } else if (tagName.equalsIgnoreCase("enclosure")) {
+                            String imgUrl = parser.getAttributeValue(null, "url");
+                            currentNewsItem.setImgUrl(imgUrl);
+                        } else if (tagName.equalsIgnoreCase("pubDate")) {
                             currentNewsItem.setDate(parser.nextText());
                         }
                     }
@@ -118,5 +119,3 @@ public class NewsItem {
         return newsItemList;
     }
 }
-
-

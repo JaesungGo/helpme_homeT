@@ -102,24 +102,46 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 String postId = mDatabase.child("posts").push().getKey();
 
-                Post post = new Post(postId, title, content, name);
-
-                if (imageUri != null) {
+                if (postId != null) {
                     StorageReference imageRef = mStorage.child("post_images").child(postId + ".jpg");
-                    imageRef.putFile(imageUri)
-                            .addOnSuccessListener(taskSnapshot -> {
-                                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                                    post.setImageUrl(uri.toString());
-                                    savePost(post);
-                                }).addOnFailureListener(e -> {
-                                    Toast.makeText(CreatePostActivity.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
+
+                    if (imageUri != null) {
+                        // 이미지가 선택된 경우, 이미지를 Firebase Storage에 업로드
+                        imageRef.putFile(imageUri)
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        // 이미지 업로드 성공 시, 다운로드 URL을 가져옴
+                                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                // 다운로드 URL을 사용하여 게시물 객체 생성
+                                                Post post = new Post(postId, title, content, uri.toString(), name);
+
+                                                // 게시물을 Firebase Database에 저장
+                                                savePost(post);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(CreatePostActivity.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(CreatePostActivity.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
+                                    }
                                 });
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(CreatePostActivity.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
-                            });
-                } else {
-                    savePost(post);
+                    } else {
+                        // 이미지가 선택되지 않은 경우, 게시물 객체 생성 (이미지 URL은 null)
+                        Post post = new Post(postId, title, content, null, name);
+
+                        // 게시물을 Firebase Database에 저장
+                        savePost(post);
+                    }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

@@ -5,18 +5,18 @@ public class Post {
     private String title;
     private String content;
     private String imageUrl;
-    private  String name;
+    private String name;
 
     public Post() {
         // Firebase에서 필요한 빈 생성자입니다.
     }
 
-    public Post(String postId, String title, String content, String imageUrl) {
+    public Post(String postId, String title, String content, String imageUrl, String name) {
         this.postId = postId;
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
-        this.name=name;
+        this.name = name;
     }
 
     public String getPostId() {
@@ -54,6 +54,11 @@ public class Post {
     public String getName() {
         return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
+
 
 

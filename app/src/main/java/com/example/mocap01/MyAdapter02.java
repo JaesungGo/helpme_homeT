@@ -22,10 +22,13 @@ public class MyAdapter02 extends RecyclerView.Adapter<MyAdapter02.ViewHolder> {
     private Context context;
     private OnItemClickListener clickListener;
 
-    public MyAdapter02(List<NewsItem> newsItemList, Context context, OnItemClickListener clickListener) {
+    public MyAdapter02(List<NewsItem> newsItemList, Context context) {
         this.items = newsItemList;
         this.context = context;
-        this.clickListener = clickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
     }
 
     @NonNull
@@ -41,15 +44,14 @@ public class MyAdapter02 extends RecyclerView.Adapter<MyAdapter02.ViewHolder> {
 
         holder.titleTextView.setText(item.getTitle());
         holder.descTextView.setText(item.getDesc());
+        holder.linkTextView.setText(item.getLink());
         holder.dateTextView.setText(item.getDate());
 
-        // 이미지 로드
         Glide.with(context)
                 .load(item.getImgUrl())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.imageView);
 
-        // 아이템 클릭 이벤트 처리
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +68,7 @@ public class MyAdapter02 extends RecyclerView.Adapter<MyAdapter02.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView linkTextView;
         TextView titleTextView;
         TextView descTextView;
         TextView dateTextView;
@@ -75,17 +78,13 @@ public class MyAdapter02 extends RecyclerView.Adapter<MyAdapter02.ViewHolder> {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.tv_title);
             descTextView = itemView.findViewById(R.id.tv_desc);
+            linkTextView = itemView.findViewById(R.id.tv_link);
             dateTextView = itemView.findViewById(R.id.tv_date);
             imageView = itemView.findViewById(R.id.iv);
         }
     }
 
-    // 아이템 클릭 리스너 인터페이스
     public interface OnItemClickListener {
         void onItemClick(NewsItem item);
     }
 }
-
-
-
-
