@@ -3,6 +3,7 @@ package com.example.mocap01
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -318,6 +319,8 @@ class DetectSitUp : AppCompatActivity() {
                 Log.e(TAG, "Failed to check if node exists: $error")
             }
         })
+        val intent = Intent(this, Exercise01::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroy() {

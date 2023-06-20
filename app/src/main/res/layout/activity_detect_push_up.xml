@@ -31,5 +31,31 @@
         android:textColor="#FFEB3B"
         android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/angle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="618dp"
+        android:rotation="90"
+        android:text="회원님 한개만 더 : 0"
+        android:textColor="#FFEB3B"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/angle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="134dp"
+        android:layout_marginBottom="610dp"
+        android:rotation="90"
+        android:text="회원님 한개만 더 : 0"
+        android:textColor="#FFEB3B"
+        android:textSize="24sp" />
+
 
 </RelativeLayout>

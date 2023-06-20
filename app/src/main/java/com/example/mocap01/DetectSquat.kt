@@ -22,11 +22,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mocap01.ml.LiteModelMovenetSingleposeThunderTfliteFloat164
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
@@ -44,6 +40,10 @@ class DetectSquat : AppCompatActivity() {
     // ActiveValue 값을 저장할 사용자 노드 생성하기
     private lateinit var userRef: DatabaseReference
     // ActiveValue 값 업데이트에 사용될 변수들 선언하기
+    private var cameraDevice: CameraDevice? = null
+    private var backgroundThread: HandlerThread? = null
+    private var backgroundHandler: Handler? = null
+    private var cameraCaptureSession: CameraCaptureSession? = null
 
     // 스쿼트 정확도 , 쿨다운 시간 , 최근 스쿼트 타임을 정의
     private val COOLDOWN_TIME_MS = 2500L
@@ -321,13 +321,42 @@ class DetectSquat : AppCompatActivity() {
                 Log.e(TAG, "Failed to check if node exists: $error")
             }
         })
+//        onPause()
+//        closeCamera()
+//        stopBackgroundThread()
+        finish()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+
+        cameraCaptureSession?.close()
+        cameraCaptureSession = null
+    }
+
+    private fun closeCamera(){
+        cameraDevice?.close()
+        cameraDevice = null
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
         model.close()
+
     }
+    private fun stopBackgroundThread() {
+        backgroundThread?.quitSafely()
+        try {
+            backgroundThread?.join()
+            backgroundThread = null
+            backgroundHandler = null
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+    }
+
 
     @SuppressLint("MissingPermission")
     fun open_camera() {
@@ -353,6 +382,7 @@ class DetectSquat : AppCompatActivity() {
                 }
 
                 override fun onDisconnected(p0: CameraDevice) {
+                    p0.close()
                 }
 
                 override fun onError(p0: CameraDevice, p1: Int) {

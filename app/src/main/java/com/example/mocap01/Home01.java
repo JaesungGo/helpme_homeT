@@ -73,7 +73,7 @@ public class Home01 extends Fragment {
 
         // ViewPager2 초기화 및 어댑터 설정
         ViewPager2 viewPager = rootView.findViewById(R.id.viewpager);
-        FragmentStateAdapter pagerAdapter = new MyAdapter(getActivity(), 4);
+        FragmentStateAdapter pagerAdapter = new Adapter_Squat(getActivity(), 4);
         viewPager.setAdapter(pagerAdapter);
 
         // Indicator 설정

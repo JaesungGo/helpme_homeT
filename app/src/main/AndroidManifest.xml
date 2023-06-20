@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,31 +18,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mocap01"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity android:name=".WebViewActivity"
-            />
-        <activity android:name=".RecycleActivity"
-            />
         <activity
-            android:name=".PostDetailActivity"
-            />
-        <activity
-            android:name=".CreatePostActivity"
-            />
+            android:name=".InforSquatActivity"
+            android:exported="false" />
+        <activity android:name=".WebViewActivity" />
+        <activity android:name=".RecycleActivity" />
+        <activity android:name=".PostDetailActivity" />
+        <activity android:name=".CreatePostActivity" />
         <activity
             android:name=".Record"
-            android:exported="true"
-            />
+            android:exported="true" />
         <activity
             android:name=".CommunityActivity"
-            android:label="Community Activity">
-        </activity>
-        <activity android:name=".Home01"/>
+            android:label="Community Activity"></activity>
+        <activity android:name=".Home01" />
         <activity
             android:name=".Exercise01"
             android:exported="false"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DetectSitUp"
             android:exported="false" />

@@ -41,14 +41,18 @@ class SquatActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(this,
-            sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
-            SensorManager.SENSOR_DELAY_NORMAL
-        )
+        if (!intent.getBooleanExtra("fromDetectSquat", false)){
+            sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        }
     }
 
     override fun onPause() {
         super.onPause()
+        sensorManager.unregisterListener(this)
+        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sensorManager.unregisterListener(this)
     }
 

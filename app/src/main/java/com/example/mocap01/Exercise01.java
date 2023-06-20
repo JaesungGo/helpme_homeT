@@ -28,7 +28,7 @@ public class Exercise01 extends Fragment {
         squatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SquatActivity.class);
+                Intent intent = new Intent(getActivity(), InforSquatActivity.class);
                 startActivity(intent);
             }
         });

@@ -3,6 +3,7 @@ package com.example.mocap01
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
@@ -34,6 +35,9 @@ import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.lang.System.currentTimeMillis
 import java.util.*
+import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.atan2
 
 class DetectPullUp : AppCompatActivity() {
 
@@ -46,7 +50,7 @@ class DetectPullUp : AppCompatActivity() {
     // ActiveValue 값 업데이트에 사용될 변수들 선언하기
 
     // 정확도 , 쿨다운 시간
-    private val COOLDOWN_TIME_MS = 2500L
+    private val COOLDOWN_TIME_MS = 2000L
     private var lastPullUpTime = 0L
     private var pull_ups = 0
 
@@ -224,48 +228,44 @@ class DetectPullUp : AppCompatActivity() {
                 val rightHipX = circles[2 * RIGHT_HIP_INDEX]
                 val rightHipY = circles[2 * RIGHT_HIP_INDEX + 1]
 
-                val LankleKneeSlope = (leftAnkleY - leftKneeY) / (leftAnkleX - leftKneeX)
-                val LkneeHipSlope = (leftKneeY - leftHipY) / (leftKneeX - leftHipX)
-                val RankleKneeSlope = (rightAnkleY - rightKneeY) / (rightAnkleX - rightKneeX)
-                val RkneeHipSlope = (rightKneeY - rightHipY) / (rightKneeX - rightHipX)
+                // 관절별 각도 계산
+                val l_angle_elbow = calculateAngle(
+                    listOf(circles[2 * LEFT_WRIST], circles[2 * LEFT_WRIST + 1]),
+                    listOf(circles[2 * LEFT_ELBOW], circles[2 * LEFT_ELBOW + 1]),
+                    listOf(circles[2 * LEFT_SHOULDER_INDEX], circles[2 * LEFT_SHOULDER_INDEX + 1])
+                )
+                val l_elbow_angle = 180 - l_angle_elbow
 
-                val LshoulderSlope = (leftHipY - leftShoulderY) / (leftHipX - leftShoulderX)
-                val RshoulderSlope = (rightHipY - rightShoulderY) / (rightHipX - rightShoulderX)
+                val r_angle_elbow = calculateAngle(
+                    listOf(circles[2 * RIGHT_WRIST], circles[2 * RIGHT_WRIST + 1]),
+                    listOf(circles[2 * RIGHT_ELBOW], circles[2 * RIGHT_ELBOW + 1]),
+                    listOf(circles[2 * RIGHT_SHOULDER_INDEX], circles[2 * RIGHT_SHOULDER_INDEX + 1])
+                )
+                val r_elbow_angle = 180 - r_angle_elbow
 
-                val Lsangle = Math.atan(((LshoulderSlope - LkneeHipSlope) / (1 + LkneeHipSlope * LshoulderSlope)).toDouble())
-                var LshoulderInDegrees = Math.toDegrees(Lsangle)
-                if (LshoulderInDegrees < 0) {
-                    LshoulderInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
-                }
+                val l_angle_shoulder = calculateAngle(
+                    listOf(circles[2 * LEFT_ELBOW], circles[2 * LEFT_ELBOW + 1]),
+                    listOf(circles[2 * LEFT_SHOULDER_INDEX], circles[2 * LEFT_SHOULDER_INDEX + 1]),
+                    listOf(circles[2 * RIGHT_SHOULDER_INDEX], circles[2 * RIGHT_SHOULDER_INDEX + 1])
+                )
+                val l_shoulder_angle = 180 - l_angle_shoulder
 
-                val Rsangle = Math.atan(((RshoulderSlope - RkneeHipSlope) / (1 + RkneeHipSlope * RshoulderSlope)).toDouble())
-                var RshoulderInDegrees = Math.toDegrees(Rsangle)
-                if (RshoulderInDegrees < 0) {
-                    RshoulderInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
-                }
-
-
-                val Langle = Math.atan(((LkneeHipSlope - LankleKneeSlope) / (1 + LankleKneeSlope * LkneeHipSlope)).toDouble())
-                var LangleInDegrees = Math.toDegrees(Langle)
-                if (LangleInDegrees < 0) {
-                    LangleInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
-                }
-
-                val Rangle = Math.atan(((LkneeHipSlope - LankleKneeSlope) / (1 + LankleKneeSlope * LkneeHipSlope)).toDouble())
-                var RangleInDegrees = Math.toDegrees(Rangle)
-                if (RangleInDegrees < 0) {
-                    RangleInDegrees += 180 // 음수인 경우 360을 더해 양수로 변환
-                }
+                val r_angle_shoulder = calculateAngle(
+                    listOf(circles[2 * RIGHT_ELBOW], circles[2 * RIGHT_ELBOW + 1]),
+                    listOf(circles[2 * RIGHT_SHOULDER_INDEX], circles[2 * RIGHT_SHOULDER_INDEX + 1]),
+                    listOf(circles[2 * LEFT_SHOULDER_INDEX], circles[2 * LEFT_SHOULDER_INDEX + 1])
+                )
+                val r_shoulder_angle = 180 - r_angle_shoulder
 
                 var allNonZero = false
-                if(leftShoulderX != 0f && leftShoulderY != 0f && rightShoulderX != 0f && rightShoulderY != 0f && leftAnkleX != 0f && leftAnkleY != 0f &&
-                    leftKneeX != 0f && leftKneeY != 0f && leftHipX != 0f && leftHipY != 0f && rightAnkleX != 0f && rightAnkleY != 0f && rightKneeX != 0f && rightKneeY != 0f && rightHipX != 0f && rightHipY != 0f){
+                if(leftShoulderX != 0f && leftShoulderY != 0f && rightShoulderX != 0f && rightShoulderY != 0f && leftelbowX != 0f && leftelbowY != 0f &&
+                    leftwristX !=0f && leftwristY!=0f && rightwristX!=0f&&rightwristY!=0f   ){
                     allNonZero = true
                 }
 
                 val currentTime = currentTimeMillis()
-                if (currentTime - lastPullUpTime >= COOLDOWN_TIME_MS && 140>= LangleInDegrees &&
-                    140>= RangleInDegrees && 60<=LshoulderInDegrees && 60<= RshoulderInDegrees && allNonZero ) {
+                if (currentTime - lastPullUpTime >= COOLDOWN_TIME_MS && allNonZero && l_elbow_angle in 110f..160f && r_elbow_angle in 110f..160f &&
+                    l_shoulder_angle in 35f..75f && r_shoulder_angle in 35f..75f ) {
                     pull_ups++ // 스쿼트 횟수 증가
                     lastPullUpTime = currentTime // 마지막 스쿼트 시간 업데이트
                     Log.d(TAG, "Number of pull_ups: $pull_ups")
@@ -277,6 +277,7 @@ class DetectPullUp : AppCompatActivity() {
 
                 val pull_upsTextView = findViewById<TextView>(R.id.pullupTextView)
                 pull_upsTextView.text = "현재 풀업 개수: $pull_ups"
+
 
                 imageView.setImageBitmap(mutable)
             }
@@ -315,6 +316,23 @@ class DetectPullUp : AppCompatActivity() {
                 Log.e(TAG, "Failed to check if node exists: $error")
             }
         })
+        val intent = Intent(this, Exercise01::class.java)
+        startActivity(intent)
+    }
+
+    private fun calculateAngle(a: List<Float>, b: List<Float>, c: List<Float>): Float {
+        val aVec = b.subtract(a) // First
+        val bVec = b.subtract(c) // Mid
+        val radians = atan2(bVec[1], bVec[0]) - atan2(aVec[1], aVec[0])
+        var angle = abs(radians * 180.0f / PI.toFloat())
+        if (angle > 180.0f) {
+            angle = 360.0f - angle
+        }
+        return angle
+    }
+
+    fun List<Float>.subtract(other: List<Float>): List<Float> {
+        return mapIndexed { index, value -> value - other[index] }
     }
 
     override fun onDestroy() {
