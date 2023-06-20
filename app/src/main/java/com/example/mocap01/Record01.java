@@ -115,10 +115,10 @@ public class Record01 extends Fragment {
                                     }
                                 }
 
-                                String result = "Pullup 합: " + pullupSum + "\n"
-                                        + "Pushup 합: " + pushupSum + "\n"
-                                        + "Situp 합: " + situpSum + "\n"
-                                        + "Squat 합: " + squatSum;
+                                String result = "Pullup 합 : " + pullupSum + "\n"
+                                        + "Pushup 합 : " + pushupSum + "\n"
+                                        + "Situp 합 : " + situpSum + "\n"
+                                        + "Squat 합 : " + squatSum;
 
                                 dataTextView.setText(result);
                             } else {
