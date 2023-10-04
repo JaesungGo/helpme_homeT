@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BDBDBD"
     tools:context=".RegisterActivity02">
 
     <ImageView
@@ -12,10 +13,12 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:src="@drawable/default_profile_image"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="76dp"/>
 
     <Button
@@ -25,7 +28,9 @@
         android:layout_below="@id/profile_image"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:text="Choose Image"
+        android:text="프로필 사진 불러오기"
+        android:backgroundTint="#059AA4"
+        android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="@+id/profile_image"
         app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="@+id/profile_image"
@@ -97,8 +102,9 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#03A2AD"
+        android:backgroundTint="#059AA4"
         android:text="가입완료"
+        android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="@+id/et_checkpass"
         app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="@+id/et_checkpass"

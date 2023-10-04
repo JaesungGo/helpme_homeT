@@ -1,44 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/profile_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/default_profile_image"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="Profile Image" />
-
-    <Button
-        android:id="@+id/select_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이미지 선택"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
-
-    <EditText
-        android:id="@+id/name_edit_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Enter Name"
-        android:inputType="text"
-        android:layout_marginTop="16dp" />
+        android:orientation="vertical"
+        android:background="#BDBDBD"
+        android:padding="16dp"
+        tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="저장"
-        android:layout_marginTop="16dp" />
+        <!-- 프로필 이미지 -->
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/default_profile_image"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Profile Image" />
+
+        <!-- 이미지 선택 버튼 -->
+        <Button
+            android:id="@+id/select_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이미지 선택"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:textColor="#fff"
+            android:textSize="25dp"
+            android:backgroundTint="#03A2AD"/>
+
+        <!-- 사용자명 입력 -->
+        <EditText
+            android:id="@+id/name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="변경할 사용자명 입력"
+            android:inputType="text"
+            android:layout_marginTop="16dp" />
+
+        <!-- 생년월일 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_edit_text"
+            android:layout_marginTop="30dp"
+            android:text="생년월일"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:background="#059AA4"
+            android:textSize="25dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <!-- 생년월일 선택 -->
+        <DatePicker
+            android:id="@+id/datepicker"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"/>
+
+        <!-- 신체정보 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/datepicker"
+            android:layout_marginTop="0dp"
+            android:text="신체정보"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:background="#059AA4"
+            android:textSize="25dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <!-- 키와 몸무게 입력 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/heightEditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="키를 입력하세요"
+                android:inputType="numberDecimal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cm"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/weightEditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="몸무게를 입력하세요"
+                android:inputType="numberDecimal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kg"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- 정보 저장 버튼 -->
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="저장"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:textSize="25dp"
+            android:backgroundTint="#03A2AD"/>
+
+    </LinearLayout>
+</ScrollView>
+
+
 
     <!--
     <EditText
@@ -75,4 +170,3 @@
         app:layout_constraintStart_toStartOf="@+id/button2"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
     -->
-</LinearLayout>

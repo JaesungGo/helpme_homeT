@@ -20,7 +20,7 @@ public class InforSquatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_infor_squat);
 
-        ViewPager2 viewPager = findViewById(R.id.viewpager);
+        ViewPager2 viewPager = findViewById(R.id.viewpager2);
         FragmentStateAdapter pagerAdapter = new Adapter_Squat(this, 3);
         viewPager.setAdapter(pagerAdapter);
 

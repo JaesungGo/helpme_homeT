@@ -4,20 +4,28 @@
         android:id="@+id/item_fragment1"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
-        android:title="홈" />
+        android:title="홈"
+        android:textColor="#fff"
+        android:backgroundTint="#03A2AD"/>
     <item
         android:id="@+id/item_fragment2"
         android:enabled="true"
         android:icon="@drawable/baseline_directions_run_24"
-        android:title="자세 코칭" />
+        android:title="자세 코칭"
+        android:textColor="#fff"
+        android:backgroundTint="#03A2AD"/>
     <item
         android:id="@+id/item_fragment3"
         android:enabled="true"
         android:icon="@drawable/baseline_assignment_24"
-        android:title="기록" />
+        android:title="기록"
+        android:textColor="#fff"
+        android:backgroundTint="#03A2AD"/>
     <item
         android:id="@+id/item_fragment4"
         android:enabled="true"
         android:icon="@drawable/baseline_account_box_24"
-        android:title="마이페이지" />
+        android:title="마이페이지"
+        android:textColor="#fff"
+        android:backgroundTint="#03A2AD"/>
 </menu>

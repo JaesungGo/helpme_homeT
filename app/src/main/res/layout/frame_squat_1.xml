@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="400dp"
+        android:layout_height="680dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="0dp"
+        android:background="#1111"
+        android:gravity="center"
+        android:autoSizeTextType="uniform"
+        android:padding="25dp"
+        android:text="--- 자세와 발 위치 ---\n\n
+어깨 너비로 다리를 벌립니다.
+발끝을 약간 외쪽으로 돌리고, 발끝이 약간 바깥쪽을 향하도록 합니다.\n\n
+--- 척추와 상체 ---\n\n
+등을 펴고 허리를 굽히지 않도록 합니다.
+상체를 약간 앞으로 기울이고, 척추를 일직선으로 유지합니다."
+        android:textColor="#000000" />
+
+
+
+</LinearLayout>

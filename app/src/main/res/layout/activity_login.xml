@@ -5,61 +5,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BDBDBD"
     tools:context=".LoginActivity02">
 
-    <EditText
-        android:id="@+id/et_pass"
+    <ImageView
+        android:id="@+id/login_logo"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
-        android:ems="10"
-        android:hint="비밀번호 입력"
-        android:inputType="textPassword"
-        app:passwordToggleEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/et_email"
-        app:layout_constraintStart_toStartOf="@+id/et_email"
-        app:layout_constraintTop_toBottomOf="@+id/et_email" />
+        android:layout_marginTop="100dp"
+        android:src="@drawable/loginlogo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/et_email"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="이메일 입력"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_logo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/et_pass"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="비밀번호 입력"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/et_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btn_register"
-        android:layout_width="120dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="300dp"
-        android:backgroundTint="#03A2AD"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="#059AA4"
         android:text="회원가입"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_login"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:textColor="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pass"
+        app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="#000000" />
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="120dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="300dp"
-        android:backgroundTint="#03A2AD"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#059AA4"
         android:text="로그인"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pass" />
+        android:textColor="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/et_pass"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

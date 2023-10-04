@@ -26,8 +26,11 @@
             android:layout_height="wrap_content"
             android:text="title"
             android:textSize="24sp"
-            android:textColor="@color/black"
+            android:textColor="#fff"
+            android:background="#059AA4"
             android:maxLines="1"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
             android:padding="8dp"
             android:textStyle="bold"/>
 
@@ -41,7 +44,7 @@
                 android:id="@+id/iv"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher"
+                android:src="@drawable/logo2"
                 android:scaleType="centerCrop"/>
 
             <LinearLayout

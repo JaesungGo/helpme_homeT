@@ -1,84 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- home.xml -->
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BDBDBD"
     tools:context=".SlidingActivity">
 
-    <ImageView
-        android:id="@+id/photoImageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="Profile Image"
-        android:layout_marginTop="60dp"
-        android:layout_marginStart="50dp" />
-
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/photoImageView"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="15dp"
-        android:layout_toEndOf="@id/photoImageView"
-        android:gravity="center_vertical"
-        android:textSize="30dp"
-        android:textStyle="bold" />
-
-    <FrameLayout
-        android:id="@+id/sliding"
-        android:layout_below="@id/nameTextView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="16dp">
+        android:layout_height="wrap_content">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewpager"
+        <ImageView
+            android:id="@+id/photoImageView"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Profile Image"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="50dp" />
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/photoImageView"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@id/photoImageView"
+            android:gravity="center_vertical"
+            android:ellipsize="end"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:id="@+id/sliding"
+            android:layout_below="@id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:scaleType="fitXY" />
+
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp" />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/community"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_below="@id/sliding"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="커뮤니티로 이동"
+            android:textSize="30sp"
+            android:textColor="#fff"
+            android:backgroundTint="#059AA4"/>
+        <Button
+            android:id="@+id/news"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_below="@id/community"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="뉴스페이지로 이동"
+            android:textSize="30sp"
+            android:textColor="#fff"
+            android:backgroundTint="#059AA4"/>
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:scaleType="fitXY" />
+            android:layout_below="@id/news" />
 
-        <me.relex.circleindicator.CircleIndicator3
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp" />
-
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/community"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/sliding"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="커뮤니티로 이동"
-        android:textSize="30sp" />
-    <Button
-        android:id="@+id/news"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/community"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="뉴스페이지로 이동"
-        android:textSize="30sp" />
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/news" />
-
-</RelativeLayout>
-
-
+    </RelativeLayout>
+</ScrollView>

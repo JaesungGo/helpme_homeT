@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BDBDBD"
     tools:context=".Record">
 
 
@@ -11,11 +12,14 @@
         android:id="@+id/today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="오늘 날짜"
-        android:layout_alignParentTop="@+id/calendarView"
-        android:layout_margin="40dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40sp"
+        android:text="   운동기록   "
+        android:textColor="#FFFF"
+        android:textStyle="bold"
+        android:background="#059AA4"
+        android:textSize="40sp"
+        android:layout_alignParentTop="@+id/calendarView" />
 
     <CalendarView
         android:id="@+id/calendarView"
@@ -23,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="false"
         android:layout_centerHorizontal="true"
+        android:selectedWeekBackgroundColor="#059AA4"
         android:layout_marginTop="130dp"
         />
 
@@ -30,25 +35,29 @@
         android:id="@+id/exercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/calendarView"
-        android:layout_marginLeft="60dp"
-        android:layout_marginBottom="-72dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/calendarView"
+        android:layout_marginTop="0dp"
         android:gravity="left"
-        android:text="운동량 : "
+        android:text="  운동량  "
+        android:textStyle="bold"
+        android:textColor="#ffff"
+        android:background="#059AA4"
         android:textSize="30sp" />
+
 
     <TextView
         android:id="@+id/dataTextView"
-        android:layout_width="252dp"
-        android:layout_height="413dp"
-        android:layout_below="@+id/calendarView"
-
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="36dp"
-        android:layout_toEndOf="@+id/exercise"
-        android:text="총합"
-        android:textSize="20sp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/exercise"
+        android:layout_marginTop="20dp"
+        android:gravity="left"
+        android:text="  운동량  "
+        android:textStyle="bold"
+        android:textColor="#111111"
+        android:textSize="25sp" />
 
 
 </RelativeLayout>
