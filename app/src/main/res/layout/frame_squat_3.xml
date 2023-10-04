@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="400dp"
+        android:layout_height="680dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="0dp"
+        android:background="#1111"
+        android:gravity="center"
+        android:padding="25dp"
+        android:autoSizeTextType="uniform"
+        android:text="\n스쿼트를 수행할 때 이러한 주의사항을 지키면 부상의 위험을 줄이고 효과적인 운동을 할 수 있습니다.\n\n
+         개인의 체력과 유연성에 따라 조금씩 차이가 있을 수 있으므로, 자신의 편안한 범위 내에서 스쿼트를 수행하는 것이 중요합니다.\n\n
+          안전을 우선시하며 필요한 경우 전문적인 트레이너의 지도를 받는 것이 좋습니다.\n"
+        android:textColor="#000000" />
+
+
+
+</LinearLayout>
