@@ -295,7 +295,7 @@ class DetectPullUp : AppCompatActivity() {
         val userId = auth.currentUser?.uid
         // ActiveValue 값을 저장할 사용자 노드 생성하기
         if (userId != null) {
-            userRef = database.child("UserAccount").child(userId)
+            userRef = database.child("Users").child(userId)
         }
         // 오늘 날짜에 해당하는 노드에 ActiveValue 값을 업로드하기
         val calendar = Calendar.getInstance()

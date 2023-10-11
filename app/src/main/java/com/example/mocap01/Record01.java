@@ -65,7 +65,7 @@ public class Record01 extends Fragment {
 
 
                     DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                    DatabaseReference exerciseRef = database.child("UserAccount").child(userId).child("Check2").child(selectedDate);
+                    DatabaseReference exerciseRef = database.child("Users").child(userId).child("Check2").child(selectedDate);
 
                     exerciseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
