@@ -10,12 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -40,8 +41,13 @@ public class Mypage01 extends Fragment {
 
     private ImageView mProfileImage;
     private EditText mNameEditText;
+    private DatePicker mDatePicker;
+    private EditText mHeightEdit;
+    private EditText mWeightEdit;
     private Button mSelectImageButton;
     private Button mSaveButton;
+    private TextView mGenderTextView;
+    private TextView mBirthdayTextView;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -52,6 +58,8 @@ public class Mypage01 extends Fragment {
     private String mProfileImageUrl;
 
     private ActivityResultLauncher<Intent> mGetContentLauncher;
+    private String mGender;  // 변수 추가: 성별 정보를 저장
+    private String mBirthday;  // 변수 추가: 생년월일 정보를 저장
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,13 +67,17 @@ public class Mypage01 extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("Info");
         mStorageRef = FirebaseStorage.getInstance().getReference("ProfileImages");
 
         mProfileImage = rootView.findViewById(R.id.profile_image);
         mNameEditText = rootView.findViewById(R.id.name_edit_text);
         mSelectImageButton = rootView.findViewById(R.id.select_image_button);
+        mHeightEdit = rootView.findViewById(R.id.heightEditText);
+        mWeightEdit = rootView.findViewById(R.id.weightEditText);
         mSaveButton = rootView.findViewById(R.id.save_button);
+        mGenderTextView = rootView.findViewById(R.id.genderTextView);
+        mBirthdayTextView = rootView.findViewById(R.id.birthdayTextView);
 
         mSelectImageButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -93,13 +105,16 @@ public class Mypage01 extends Fragment {
 
     private void saveChanges() {
         final String name = mNameEditText.getText().toString().trim();
+        final String height = mHeightEdit.getText().toString().trim();
+        final String weight = mWeightEdit.getText().toString().trim();
+
+
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(getActivity(), "이름을 입력해주세요", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (mImageUri != null) {
-            // 프로필 사진 변경이 있는 경우
             final StorageReference imageRef = mStorageRef.child(mUser.getUid() + ".jpg");
             Bitmap bitmap = null;
             try {
@@ -116,23 +131,26 @@ public class Mypage01 extends Fragment {
             uploadTask.addOnSuccessListener(taskSnapshot -> {
                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     mProfileImageUrl = uri.toString();
-                    saveUserChanges(name);
+                    updateUserProfile(name,mGender,mBirthday, height, weight);
                 });
             }).addOnFailureListener(e -> {
-                Toast.makeText(getActivity(), "이미지 업로드에 실패햐였습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "이미지 업로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
             });
         } else {
-            // 프로필 사진 변경이 없는 경우
-            saveUserChanges(name);
+            updateUserProfile(name,mGender,mBirthday, height, weight);
         }
     }
 
-    private void saveUserChanges(String name) {
+    private void updateUserProfile(String name,String gender,String birthday, String height, String weight) {
         String uid = mUser.getUid();
 
-        // 사용자 정보 업데이트
         User user = new User(uid, mUser.getEmail(), name, mProfileImageUrl);
-        mDatabaseRef.child(uid).setValue(user)
+        user.setHeight(height);
+        user.setWeight(weight);
+        user.setGender(gender);
+        user.setBirthday(birthday);
+
+        mDatabaseRef.setValue(user)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getActivity(), "프로필이 성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
                 })
@@ -144,24 +162,30 @@ public class Mypage01 extends Fragment {
     private void loadUserProfile() {
         String uid = mUser.getUid();
 
-        // Firebase에서 사용자 정보 가져오기
-        mDatabaseRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    User user = snapshot.getValue(User.class);
+                    mGender = snapshot.child("gender").getValue(String.class);
+                    mBirthday = snapshot.child("birthday").getValue(String.class);
+                    String height = snapshot.child("height").getValue(String.class);
+                    String weight = snapshot.child("weight").getValue(String.class);
 
-                    // 프로필 사진 표시
-                    if (user != null && !TextUtils.isEmpty(user.getProfileImageUrl())) {
+                    mHeightEdit.setText(height);
+                    mWeightEdit.setText(weight);
+
+                    mGenderTextView.setText(mGender);
+                    mBirthdayTextView.setText(mBirthday);
+
+                    String name = snapshot.child("name").getValue(String.class);
+                    mNameEditText.setText(name);
+
+                    String profileImageUrl = snapshot.child("profileImageUrl").getValue(String.class);
+                    if (!TextUtils.isEmpty(profileImageUrl)) {
                         Glide.with(getActivity())
-                                .load(user.getProfileImageUrl())
+                                .load(profileImageUrl)
                                 .apply(RequestOptions.circleCropTransform())
                                 .into(mProfileImage);
-                    }
-
-                    // 이름 표시
-                    if (user != null && !TextUtils.isEmpty(user.getName())) {
-                        mNameEditText.setText(user.getName());
                     }
                 }
             }
@@ -178,9 +202,13 @@ public class Mypage01 extends Fragment {
         private String email;
         private String name;
         private String profileImageUrl;
+        private String height;
+        private String weight;
+        private String gender;
+        private String birthday;
 
         public User() {
-            // Default constructor required for Firebase
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
         }
 
         public User(String uid, String email, String name, String profileImageUrl) {
@@ -221,15 +249,36 @@ public class Mypage01 extends Fragment {
         public void setProfileImageUrl(String profileImageUrl) {
             this.profileImageUrl = profileImageUrl;
         }
+
+        public String getHeight() {
+            return height;
+        }
+
+        public void setHeight(String height) {
+            this.height = height;
+        }
+
+        public String getWeight() {
+            return weight;
+        }
+
+        public void setWeight(String weight) {
+            this.weight = weight;
+        }
+        public String getGender() {
+            return gender;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+
+        public String getBirthday() {
+            return birthday;
+        }
+
+        public void setBirthday(String birthday) {
+            this.birthday = birthday;
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-

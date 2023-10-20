@@ -48,7 +48,7 @@ public class Home01 extends Fragment {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
-            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Info");
 
             databaseRef.addValueEventListener(new ValueEventListener() {
                 @Override
