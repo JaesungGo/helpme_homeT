@@ -1,6 +1,5 @@
 package com.example.mocap01
 
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -22,9 +21,8 @@ import kotlin.math.sqrt
 
 class SquatActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var tiltValuesTextView: TextView
-    private var lastYrAngle: Int? = null
+    private var lastYrAngle: Int = 0 // Default value for lastYrAngle
     private val handler = Handler(Looper.getMainLooper())
-
 
     private val sensorManager by lazy {
         getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -32,11 +30,15 @@ class SquatActivity : AppCompatActivity(), SensorEventListener {
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
-
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_squat)
         tiltValuesTextView = findViewById(R.id.tiltValuesTextView)
+
+        // Check if there is saved state and restore lastYrAngle if available
+        if (savedInstanceState != null) {
+            lastYrAngle = savedInstanceState.getInt("lastYrAngle", 0)
+        }
     }
 
     override fun onResume() {
@@ -46,14 +48,21 @@ class SquatActivity : AppCompatActivity(), SensorEventListener {
                 sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
                 SensorManager.SENSOR_DELAY_NORMAL
             )
+        } else {
+            // "DetectSquat"에서 돌아온 경우, "불가" 상태로 설정
+            tiltValuesTextView.text = "불가"
         }
     }
 
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        sensorManager.unregisterListener(this)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Save the lastYrAngle in the instance state bundle
+        outState.putInt("lastYrAngle", lastYrAngle)
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -70,7 +79,7 @@ class SquatActivity : AppCompatActivity(), SensorEventListener {
             if (yrAngle in 60..80) {
                 tiltValuesTextView.text = "정상"
 
-                if (lastYrAngle == null || lastYrAngle != yrAngle) {
+                if (lastYrAngle == 0 || lastYrAngle != yrAngle) {
                     lastYrAngle = yrAngle
                     handler.removeCallbacksAndMessages(null)
                     handler.postDelayed({
@@ -83,12 +92,10 @@ class SquatActivity : AppCompatActivity(), SensorEventListener {
             } else {
                 tiltValuesTextView.text = "불가"
                 handler.removeCallbacksAndMessages(null)
-                lastYrAngle = null
+                lastYrAngle = 0
             }
         }
     }
-
-
 
     override fun onAccuracyChanged(sensor: Sensor?, p1: Int) { }
 }

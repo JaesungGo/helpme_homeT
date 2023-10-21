@@ -3,7 +3,6 @@ package com.example.mocap01
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -45,11 +44,19 @@ class DetectPushUp : AppCompatActivity() {
 
     // Firebase Authentication 인스턴스 가져오기
     private lateinit var auth: FirebaseAuth
+
     // Firebase Realtime Database 레퍼런스 객체 가져오기
     private lateinit var database: DatabaseReference
+
     // ActiveValue 값을 저장할 사용자 노드 생성하기
     private lateinit var userRef: DatabaseReference
+
     // ActiveValue 값 업데이트에 사용될 변수들 선언하기
+    private var cameraDevice: CameraDevice? = null
+    private var backgroundThread: HandlerThread? = null
+    private var backgroundHandler: Handler? = null
+    private var cameraCaptureSession: CameraCaptureSession? = null
+
 
     // 정확도 , 쿨다운 시간
     private val COOLDOWN_TIME_MS = 2500L
@@ -67,6 +74,7 @@ class DetectPushUp : AppCompatActivity() {
     lateinit var handlerThread: HandlerThread
     lateinit var textureView: TextureView
     lateinit var cameraManager: CameraManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,11 +126,11 @@ class DetectPushUp : AppCompatActivity() {
                 var x = 0
                 var circles = FloatArray(34)
                 val BODY_PARTS = arrayOf(
-                    "nose","left_eye","right_eye","left_ear","right_ear",
+                    "nose", "left_eye", "right_eye", "left_ear", "right_ear",
                     "left_shoulder", "right_shoulder",
                     "left_elbow", "right_elbow",
                     "left_wrist", "right_wrist",
-                    "left_hip" , "right_hip",
+                    "left_hip", "right_hip",
                     "left_knee", "right_knee",
                     "left_ankle", "right_ankle"
                 )
@@ -201,23 +209,23 @@ class DetectPushUp : AppCompatActivity() {
                 val lefteyeX = circles[2 * LEFT_EYE]
                 val lefteyeY = circles[2 * LEFT_EYE + 1]
                 val righteyeX = circles[2 * RIGHT_EYE]
-                val righteyeY = circles[2 * RIGHT_EYE +1]
+                val righteyeY = circles[2 * RIGHT_EYE + 1]
                 val leftearX = circles[2 * LEFT_EAR]
                 val leftearY = circles[2 * LEFT_EAR + 1]
                 val rightearX = circles[2 * RIGHT_EAR]
                 val rightearY = circles[2 * RIGHT_EAR + 1]
-                val leftelbowX = circles[2*LEFT_ELBOW]
-                val leftelbowY = circles[2*LEFT_ELBOW+1]
-                val rightelbowX = circles[2*RIGHT_ELBOW]
-                val rightelbowY = circles[2*RIGHT_ELBOW+1]
-                val leftwristX = circles[2*LEFT_WRIST]
-                val leftwristY = circles[2*LEFT_WRIST+1]
-                val rightwristX = circles[2*RIGHT_WRIST]
-                val rightwristY = circles[2*RIGHT_WRIST+1]
+                val leftelbowX = circles[2 * LEFT_ELBOW]
+                val leftelbowY = circles[2 * LEFT_ELBOW + 1]
+                val rightelbowX = circles[2 * RIGHT_ELBOW]
+                val rightelbowY = circles[2 * RIGHT_ELBOW + 1]
+                val leftwristX = circles[2 * LEFT_WRIST]
+                val leftwristY = circles[2 * LEFT_WRIST + 1]
+                val rightwristX = circles[2 * RIGHT_WRIST]
+                val rightwristY = circles[2 * RIGHT_WRIST + 1]
                 val leftShoulderX = circles[2 * LEFT_SHOULDER_INDEX]
                 val leftShoulderY = circles[2 * LEFT_SHOULDER_INDEX + 1]
-                val rightShoulderX = circles[2* RIGHT_SHOULDER_INDEX]
-                val rightShoulderY = circles[2* RIGHT_SHOULDER_INDEX+1]
+                val rightShoulderX = circles[2 * RIGHT_SHOULDER_INDEX]
+                val rightShoulderY = circles[2 * RIGHT_SHOULDER_INDEX + 1]
                 val leftAnkleX = circles[2 * LEFT_ANKLE_INDEX]
                 val leftAnkleY = circles[2 * LEFT_ANKLE_INDEX + 1]
                 val leftKneeX = circles[2 * LEFT_KNEE_INDEX]
@@ -268,20 +276,25 @@ class DetectPushUp : AppCompatActivity() {
 
                 val r_hip_shoulder = calculateAngle(
                     listOf(circles[2 * RIGHT_ELBOW], circles[2 * RIGHT_ELBOW + 1]),
-                    listOf(circles[2 * RIGHT_SHOULDER_INDEX], circles[2 * RIGHT_SHOULDER_INDEX + 1]),
+                    listOf(
+                        circles[2 * RIGHT_SHOULDER_INDEX],
+                        circles[2 * RIGHT_SHOULDER_INDEX + 1]
+                    ),
                     listOf(circles[2 * RIGHT_HIP_INDEX], circles[2 * RIGHT_HIP_INDEX + 1])
                 )
                 val r_shoulder_hip = 180 - r_hip_shoulder
 
                 var allNonZero = false
                 if ((leftwristX != 0f && leftwristY != 0f && leftelbowX != 0f && leftelbowY != 0f && leftShoulderX != 0f && leftShoulderY != 0f && leftHipX != 0f && leftHipY != 0f) ||
-                    (rightwristX != 0f && rightwristY != 0f && rightelbowX != 0f && rightelbowY != 0f && rightShoulderX != 0f && rightShoulderY != 0f && rightHipX != 0f && rightHipY != 0f)) {
+                    (rightwristX != 0f && rightwristY != 0f && rightelbowX != 0f && rightelbowY != 0f && rightShoulderX != 0f && rightShoulderY != 0f && rightHipX != 0f && rightHipY != 0f)
+                ) {
                     allNonZero = true;
                 }
 
                 val currentTime = currentTimeMillis()
-                if (currentTime - lastPushUpTime >= COOLDOWN_TIME_MS && 90<= l_elbow_angle &&
-                    80<= l_hip_shoulder && allNonZero || 90<= r_elbow_angle && 80<= r_hip_shoulder && allNonZero ) {
+                if (currentTime - lastPushUpTime >= COOLDOWN_TIME_MS && 90 <= l_elbow_angle &&
+                    80 <= l_hip_shoulder && allNonZero || 90 <= r_elbow_angle && 80 <= r_hip_shoulder && allNonZero
+                ) {
                     push_ups++ // 스쿼트 횟수 증가
                     lastPushUpTime = currentTime // 마지막 스쿼트 시간 업데이트
                     Log.d(TAG, "Number of push_ups: $push_ups")
@@ -298,8 +311,8 @@ class DetectPushUp : AppCompatActivity() {
                 imageView.setImageBitmap(mutable)
 
                 val angle1 = findViewById<TextView>(R.id.angle1)
-               angle1.rotation = 90f
-               angle1.text = "팔꿈치-어깨-엉덩이: $l_shoulder_hip"
+                angle1.rotation = 90f
+                angle1.text = "팔꿈치-어깨-엉덩이: $l_shoulder_hip"
 
                 val angle2 = findViewById<TextView>(R.id.angle2)
                 angle2.rotation = 90f
@@ -340,9 +353,8 @@ class DetectPushUp : AppCompatActivity() {
                 Log.e(TAG, "Failed to check if node exists: $error")
             }
         })
-        val intent = Intent(this, Exercise01::class.java)
-        startActivity(intent)
     }
+
     private fun calculateAngle(a: List<Float>, b: List<Float>, c: List<Float>): Float {
         val aVec = b.subtract(a) // First
         val bVec = b.subtract(c) // Mid
@@ -366,7 +378,7 @@ class DetectPushUp : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     fun open_camera() {
         cameraManager.openCamera(
-            cameraManager.cameraIdList[0],
+            cameraManager.cameraIdList[1],
             object : CameraDevice.StateCallback() {
                 override fun onOpened(p0: CameraDevice) {
                     var captureRequest = p0.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
@@ -387,6 +399,7 @@ class DetectPushUp : AppCompatActivity() {
                 }
 
                 override fun onDisconnected(p0: CameraDevice) {
+
                 }
 
                 override fun onError(p0: CameraDevice, p1: Int) {
