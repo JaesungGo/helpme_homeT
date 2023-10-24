@@ -29,5 +29,17 @@
         android:textColor="#FFEB3B"
         android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/squatsTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="620dp"
+        android:text="틀린스쿼트 개수 : 0"
+        android:textColor="#FFEB3B"
+        android:textSize="20sp" />
+
 
 </RelativeLayout>

@@ -46,12 +46,15 @@ class DetectSquat : AppCompatActivity() {
     private var cameraCaptureSession: CameraCaptureSession? = null
 
     // 스쿼트 정확도 , 쿨다운 시간 , 최근 스쿼트 타임을 정의
-    private val COOLDOWN_TIME_MS = 1300L
+    private val COOLDOWN_TIME_MS = 1000L
     private var firstSitTime = 0L
-    //private var lastSquatTime = 0L
-    private var squats = 0
+    private var lastSquatTime = 0L
     private var isSquatting = false
+    private var isSitting = false
+    private var isStanding = false
+    private var squats = 0
     private val wrongList = mutableListOf<Int>()
+    private var wrongCount = 0
 
     // 안드로이드 파일 관련 정의
     val paint = Paint()
@@ -81,7 +84,7 @@ class DetectSquat : AppCompatActivity() {
         handlerThread.start()
         handler = Handler(handlerThread.looper)
 
-        paint.setColor(Color.BLACK)
+        paint.setColor(Color.WHITE)
 
         textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             override fun onSurfaceTextureAvailable(p0: SurfaceTexture, p1: Int, p2: Int) {
@@ -244,44 +247,60 @@ class DetectSquat : AppCompatActivity() {
 
                 // 스쿼트 검출 조건
                 val currentTime = System.currentTimeMillis()
+                var wrongSquat = wrongList.count {it ==1 }
+
+                if (10 >= LshoulderInDegrees && 10 >= RshoulderInDegrees
+                    && 10 >= LangleInDegrees && 10 >= RangleInDegrees ) // 일어선 상태
+                {
+                    isStanding = true
+                    paint.color = Color.WHITE
+                }
+
                 if (60 <= LangleInDegrees && 60 <= RangleInDegrees &&
                     60 <= LshoulderInDegrees && 60 <= RshoulderInDegrees && allNonZero
                 ) {
                     isSquatting = true
                     firstSitTime = currentTime // 처음 앉은 시간
                     paint.color = Color.GREEN
-                    wrongList.add(0)           // 제대로 했을때도 추가 0
+                    wrongList.add(0)
                     Handler(Looper.getMainLooper()).postDelayed({
-                        paint.color = Color.BLACK
+                        paint.color = Color.WHITE
                     }, 500)
                 }
+
                 if (isSquatting && currentTime - firstSitTime >= COOLDOWN_TIME_MS
-                    && 10 >= LangleInDegrees && 10 >= RangleInDegrees
-                    && 10 >= LshoulderInDegrees && 10 >=RshoulderInDegrees ) // 스쿼트 후 앉지 않고 일어섰을 때
+                    && 10 >= LangleInDegrees && 10 >= RangleInDegrees ) // 스쿼트 후 앉지 않고 일어섰을 때
                 {
                     squats++ // 스쿼트 횟수 증가
                     isSquatting = false
                 }
-                if (isSquatting && 30 >= LangleInDegrees && LangleInDegrees > 10 &&
-                    30 >= RangleInDegrees && 30 >= RshoulderInDegrees && 30 >= LshoulderInDegrees
-                    && RshoulderInDegrees >10 && LshoulderInDegrees >10 ) // 주저 앉았을때
+
+                if (isSquatting && !isSitting && currentTime - firstSitTime >= COOLDOWN_TIME_MS
+                    && 30 >= LangleInDegrees && LangleInDegrees > 10 &&
+                    30 >= RangleInDegrees && RangleInDegrees >10 ) // 주저 앉았을때
                 {
                     paint.color = Color.RED
                     isSquatting = false
-                    wrongList.add(1) // 앉았을때의 오류 배열 값:1
+                    isStanding =false
+                    isSitting = true
+                    if (wrongList.isEmpty() || wrongList.last() != 1) {
+                        wrongList.add(1)
+                    }
                 }
 
-//                if( isSquatting && 25 >= LshoulderInDegrees && 25 >= RshoulderInDegrees
-//                    && LshoulderInDegrees > 10 && RshoulderInDegrees >10) // 허리를 굽혔을 때 어떻게 측정? 정면 불가
-//                {
-//                    paint.color = Color.RED
-//                    isSquatting = false
-//                }
-
+                if (isSitting && 10 >= LangleInDegrees && 10 >= RangleInDegrees ) // 앉은 후 일어섰을때
+                {
+                    isSitting = false
+                    isStanding = true
+                    paint.color = Color.WHITE
+                    wrongList.add(0)
+                }
 
                 // 스쿼트 횟수 텍스트 뷰 업데이트
                 val squatsTextView = findViewById<TextView>(R.id.squatsTextView)
                 squatsTextView.text = "현재 스쿼트 개수: $squats"
+                val squatsTextView2 = findViewById<TextView>(R.id.squatsTextView2)
+                squatsTextView2.text = "틀린 스쿼트 개수 : $wrongSquat"
                 imageView.setImageBitmap(mutable)
             }
         }
