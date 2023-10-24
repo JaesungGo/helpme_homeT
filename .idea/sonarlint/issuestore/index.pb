@@ -233,10 +233,6 @@ f
 6app/src/main/java/com/example/mocap01/SitUpActivity.kt,b\c\bc6aee25c73925aea285ff280f6b395234da5e60
 g
 7app/src/main/java/com/example/mocap01/MainActivity.java,7\1\71b48bc7d5ddfc7af6db2b2be64e2f4018cd02ad
-c
-3app/src/main/java/com/example/mocap01/Record01.java,1\a\1a37fe5f364245f5ef8e6e49675aece97724a706
-a
-1app/src/main/java/com/example/mocap01/Record.java,1\0\106fceeb54fc413d1710170e6ca5c2b1e880b641
 j
 :app/src/main/java/com/example/mocap01/SlidingActivity.java,9\1\91f77a1d62743775f7de19214577f4e4d34f5c73
 e

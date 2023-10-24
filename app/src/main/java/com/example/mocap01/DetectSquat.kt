@@ -55,6 +55,8 @@ class DetectSquat : AppCompatActivity() {
     private var squats = 0
     private val wrongList = mutableListOf<Int>()
     private var wrongCount = 0
+    private var wrongSquat = 0
+
 
     // 안드로이드 파일 관련 정의
     val paint = Paint()
@@ -223,13 +225,7 @@ class DetectSquat : AppCompatActivity() {
 
                 val Rangle = calculateAngle(RankleKneeSlope, RkneeHipSlope)
                 val RangleInDegrees = if (Rangle < 0) Rangle + 180 else Rangle
-
-                Log.d(TAG, "Lshoulder: $LshoulderInDegrees")
-                Log.d(TAG, "Rshoulder: $RshoulderInDegrees")
-                Log.d(TAG, "Lankle: $LangleInDegrees")
-                Log.d(TAG, "Rankle: $RangleInDegrees")
-
-
+                
                 // 관절 검출에 필요한 관절 이름만 포함하는 배열 정의
                 val REQUIRED_PARTS = arrayOf(
                     "left_ankle", "left_knee", "left_hip",
@@ -261,7 +257,7 @@ class DetectSquat : AppCompatActivity() {
                 ) {
                     isSquatting = true
                     firstSitTime = currentTime // 처음 앉은 시간
-                    paint.color = Color.GREEN
+                    paint.color = Color.GREEN  // 올바른 자세에 도달했을 때
                     wrongList.add(0)
                     Handler(Looper.getMainLooper()).postDelayed({
                         paint.color = Color.WHITE
@@ -275,7 +271,7 @@ class DetectSquat : AppCompatActivity() {
                     isSquatting = false
                 }
 
-                if (isSquatting && !isSitting && currentTime - firstSitTime >= COOLDOWN_TIME_MS
+                if (isSquatting && currentTime - firstSitTime >= COOLDOWN_TIME_MS
                     && 30 >= LangleInDegrees && LangleInDegrees > 10 &&
                     30 >= RangleInDegrees && RangleInDegrees >10 ) // 주저 앉았을때
                 {
@@ -323,13 +319,16 @@ class DetectSquat : AppCompatActivity() {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
         val today2 = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
         val activeValue = squats // 새로운 ActiveValue 값
+        val activaValue2 = wrongSquat
         val squatsRef = userRef.child("Check2").child(today).child("Squat").child(today2)
+        val squatsRef2 = userRef.child("Check2").child(today).child("WrongSquat").child(today2)
 
         // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
         squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
                     squatsRef.setValue(activeValue)
+                    squatsRef2.setValue(activaValue2)
                 }
             }
 

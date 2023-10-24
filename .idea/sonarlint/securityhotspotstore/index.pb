@@ -233,10 +233,6 @@ w
 G.idea/sonarlint/issuestore/3/f/3f5a5bc16e0abe13f4c8225b1d19b00239164dae,8\5\85a66c5c0adf2bfcba0dc03a0aa226217956d390
 g
 7app/src/main/java/com/example/mocap01/MainActivity.java,7\1\71b48bc7d5ddfc7af6db2b2be64e2f4018cd02ad
-c
-3app/src/main/java/com/example/mocap01/Record01.java,1\a\1a37fe5f364245f5ef8e6e49675aece97724a706
-a
-1app/src/main/java/com/example/mocap01/Record.java,1\0\106fceeb54fc413d1710170e6ca5c2b1e880b641
 j
 :app/src/main/java/com/example/mocap01/SlidingActivity.java,9\1\91f77a1d62743775f7de19214577f4e4d34f5c73
 e
