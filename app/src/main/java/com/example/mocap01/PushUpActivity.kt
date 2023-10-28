@@ -22,8 +22,8 @@ import kotlin.math.sqrt
 
 class PushUpActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var tiltValuesTextView: TextView
-    private var lastYrAngle: Int? = null
-    private var lastXrAngle: Int? = null
+    private var lastYrAngle: Int = 0
+    private var lastXrAngle: Int = 0
     private val handler = Handler(Looper.getMainLooper())
 
 
@@ -38,14 +38,28 @@ class PushUpActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sit_up)
         tiltValuesTextView = findViewById(R.id.tiltValuesTextView)
+
+        // Check if there is saved state and restore lastYrAngle if available
+        if (savedInstanceState != null) {
+            lastYrAngle = savedInstanceState.getInt("lastYrAngle", 0)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(this,
-            sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
-            SensorManager.SENSOR_DELAY_NORMAL
-        )
+        if (!intent.getBooleanExtra("fromDetectPushup", false)){
+            sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        } else {
+            // "DetectSquat"에서 돌아온 경우, "불가" 상태로 설정
+            tiltValuesTextView.text = "불가"
+        }
+//        sensorManager.registerListener(this,
+//            sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
+//            SensorManager.SENSOR_DELAY_NORMAL
+//        )
     }
 
     override fun onPause() {
@@ -80,7 +94,7 @@ class PushUpActivity : AppCompatActivity(), SensorEventListener {
             } else {
                 tiltValuesTextView.text = "불가"
                 handler.removeCallbacksAndMessages(null)
-                lastXrAngle = null
+                lastXrAngle = 0
             }
         }
     }

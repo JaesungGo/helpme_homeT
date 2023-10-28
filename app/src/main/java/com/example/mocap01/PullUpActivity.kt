@@ -22,7 +22,7 @@ import kotlin.math.sqrt
 
 class PullUpActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var tiltValuesTextView: TextView
-    private var lastYrAngle: Int? = null
+    private var lastYrAngle: Int = 0
     private val handler = Handler(Looper.getMainLooper())
 
 
@@ -32,24 +32,43 @@ class PullUpActivity : AppCompatActivity(), SensorEventListener {
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
-
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pull_up)
         tiltValuesTextView = findViewById(R.id.tiltValuesTextView)
+
+        // Check if there is saved state and restore lastYrAngle if available
+        if (savedInstanceState != null) {
+            lastYrAngle = savedInstanceState.getInt("lastYrAngle", 0)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(this,
-            sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
-            SensorManager.SENSOR_DELAY_NORMAL
-        )
+        if (!intent.getBooleanExtra("fromDetectPullup", false)){
+            sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        } else {
+            // "DetectSquat"에서 돌아온 경우, "불가" 상태로 설정
+            tiltValuesTextView.text = "불가"
+        }
+//        sensorManager.registerListener(this,
+//            sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
+//            SensorManager.SENSOR_DELAY_NORMAL
+//        )
     }
 
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Save the lastYrAngle in the instance state bundle
+        outState.putInt("lastYrAngle", lastYrAngle)
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -79,7 +98,7 @@ class PullUpActivity : AppCompatActivity(), SensorEventListener {
             } else {
                 tiltValuesTextView.text = "불가"
                 handler.removeCallbacksAndMessages(null)
-                lastYrAngle = null
+                lastYrAngle = 0
             }
         }
     }

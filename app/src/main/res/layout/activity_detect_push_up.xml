@@ -30,6 +30,19 @@
         android:text="회원님 한개만 더 : 0"
         android:textColor="#FFEB3B"
         android:textSize="24sp" />
+    <TextView
+        android:id="@+id/push_upsTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-20dp"
+        android:layout_marginBottom="600dp"
+        android:rotation="90"
+        android:text="틀린situps 개수 : 0"
+        android:textColor="#FFEB3B"
+        android:textSize="20sp" />
+
 
     <TextView
         android:id="@+id/angle1"

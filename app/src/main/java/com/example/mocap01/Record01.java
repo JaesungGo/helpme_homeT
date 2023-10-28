@@ -96,13 +96,13 @@ public class Record01 extends Fragment {
                                                     int exerciseData = Integer.parseInt(exerciseDataNumber);
 
                                                     switch (exerciseName) {
-                                                        case "Pullup":
+                                                        case "PullUp":
                                                             pullupSum += exerciseData;
                                                             break;
-                                                        case "Pushup":
+                                                        case "PushUp":
                                                             pushupSum += exerciseData;
                                                             break;
-                                                        case "Situp":
+                                                        case "SitUp":
                                                             situpSum += exerciseData;
                                                             break;
                                                         case "Squat":
