@@ -1,6 +1,4 @@
 
-?
-settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
 y
 Iapp/src/androidTest/java/com/example/mocap01/ExampleInstrumentedTest.java,8\4\840877ccdcae8408fa2369d4346bb83042f9b943
 j
@@ -33,10 +31,6 @@ G.idea/sonarlint/issuestore/4/9/498243f07d4d6fdae54f9b7abdcb5a36fd4677c7,a\0\a0
 Q.idea/sonarlint/securityhotspotstore/5/f/5f67d9adf940ff8c6345d2bc8623f910b25b30ff,b\c\bc7cd07af1da12a2497ad270f678360c58a1badc
 w
 G.idea/sonarlint/issuestore/5/f/5f67d9adf940ff8c6345d2bc8623f910b25b30ff,0\1\01b31b382f4134cb0ade2104285866f6e68bfe1a
-<
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
-@
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 c
 3app/src/main/java/com/example/mocap01/NewsItem.java,4\e\4e021d70f68b9e9c9a3b40e3f934abc7df77d896
 w

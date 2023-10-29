@@ -3,6 +3,7 @@ package com.example.mocap01
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
@@ -10,13 +11,11 @@ import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.os.Looper
+import android.os.*
 import android.util.Log
 import android.view.Surface
 import android.view.TextureView
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +32,32 @@ import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.lang.System.currentTimeMillis
 import java.util.*
+
+data class ParcelablePair<A, B>(val first: A?, val second: B?) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readValue(null) as A,
+        parcel.readValue(null) as B
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeValue(first)
+        parcel.writeValue(second)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<ParcelablePair<Any, Any>> {
+        override fun createFromParcel(parcel: Parcel): ParcelablePair<Any, Any> {
+            return ParcelablePair(parcel)
+        }
+
+        override fun newArray(size: Int): Array<ParcelablePair<Any, Any>?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 class DetectSquat : AppCompatActivity() {
 
@@ -53,11 +78,12 @@ class DetectSquat : AppCompatActivity() {
     private val SITDOWN_TIME_MS = 500L
     private var firstSquatTime = 0L
     private var firstSitTime = 0L
+    private val recordTime = getCurrentDateTime()
     private var isSquatting = false
     private var isSitting = false
     private var isStanding = false
     private var squats = 0
-    private val wrongList = mutableListOf<Int>()
+    private val wrongList = mutableListOf<Pair<Int,Any>>()
     private var wrongSquat = 0
     private var measureEnv = false
 
@@ -74,11 +100,17 @@ class DetectSquat : AppCompatActivity() {
     lateinit var handlerThread: HandlerThread
     lateinit var textureView: TextureView
     lateinit var cameraManager: CameraManager
+    val intent2 = Intent(this, ResultRecord::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detect_squat)
         get_permissions()
+
+        val sendButton = findViewById<Button>(R.id.btn2)
+        sendButton.setOnClickListener {
+            sendDataToOtherActivity()
+        }
 
         imageProcessor =
             ImageProcessor.Builder().add(ResizeOp(256, 256, ResizeOp.ResizeMethod.BILINEAR)).build()
@@ -255,7 +287,7 @@ class DetectSquat : AppCompatActivity() {
 
                 // 스쿼트 검출 조건
                 val currentTime = System.currentTimeMillis()
-                wrongSquat = wrongList.count { it != 0 }
+                wrongSquat = wrongList.count { it.first !in listOf(0, 1) }
                 // 중앙 실선
                 val startPoint = PointF(540f, 0.0f)
                 val endPoint = PointF(540f, h.toFloat())
@@ -314,7 +346,7 @@ class DetectSquat : AppCompatActivity() {
                 {
                     isStanding = true
                     paint.color = Color.BLACK
-                    wrongList.add(0)
+//                    wrongList.add(Pair(0,0))
                 }
                 else{
                     isStanding = false
@@ -323,7 +355,7 @@ class DetectSquat : AppCompatActivity() {
                     60 <= LshoulderInDegrees && 60 <= RshoulderInDegrees && allNonZero
                 ) {
                     isSquatting = true
-                    firstSquatTime = currentTime // 처음 앉은 시간
+                    firstSquatTime = currentTime // 처음 앉은 시간W
                     paint.color = Color.GREEN
                     Handler(Looper.getMainLooper()).postDelayed({
                         paint.color = Color.BLACK
@@ -334,7 +366,7 @@ class DetectSquat : AppCompatActivity() {
                 ) // 스쿼트 후 앉지 않고 일어섰을 때
                 {
                     squats++ // 스쿼트 횟수 증가
-                    wrongList.add(0)
+                    wrongList.add(Pair(1,recordTime))
                     MotionToast.createColorToast(
                         this@DetectSquat,
                         "성공",
@@ -349,25 +381,6 @@ class DetectSquat : AppCompatActivity() {
                     )
                     isSquatting = false
                 }
-//                }else{
-//                    if (!isSitting && isSquatting && currentTime - firstSquatTime >= COOLDOWN_TIME_MS
-//                        && firstSquatTime < firstSitTime
-//                        && 10 >= LangleInDegrees && 10 >= RangleInDegrees ) // 스쿼트 후 앉지 않고 일어섰을 때
-//                    {
-//                        squats++ // 스쿼트 횟수 증가
-//                        wrongList.add(0)
-//                        MotionToast.createColorToast(
-//                            this@DetectSquat,
-//                            "성공",
-//                            "올바른 자세입니다. $squats 개",
-//                            MotionToastStyle.SUCCESS,
-//                            MotionToast.GRAVITY_TOP,
-//                            MotionToast.LONG_DURATION,
-//                            ResourcesCompat.getFont(this@DetectSquat, www.sanju.motiontoast.R.font.helvetica_regular)
-//                        )
-//                        isSquatting = false
-//                    }
-//                }
 
                 if ( Math.abs(LangleInDegrees - RangleInDegrees) < 30 &&
                     Math.abs(LshoulderInDegrees - RshoulderInDegrees ) < 30
@@ -380,8 +393,8 @@ class DetectSquat : AppCompatActivity() {
                     paint.color = Color.RED
                     isSquatting = false
                     isSitting = true
-                    if (wrongList.isEmpty() || wrongList.last() != 1) {
-                        wrongList.add(1)
+                    if (wrongList.lastOrNull()?.first != 2) {
+                        wrongList.add(Pair(2, recordTime))
                     }
                     MotionToast.createColorToast(
                         this@DetectSquat,
@@ -405,8 +418,8 @@ class DetectSquat : AppCompatActivity() {
                     Math.abs(LangleInDegrees - RangleInDegrees) < 20 &&
                     allNonZero ) // 다리를 좁게 앉았을 때
                 {
-                    if (wrongList.isEmpty() || wrongList.last() != 2) {
-                        wrongList.add(2)
+                    if (wrongList.lastOrNull()?.first != 3) {
+                        wrongList.add(Pair(2, recordTime))
                     }
                     paint.color = Color.RED
                     isStanding = false
@@ -559,5 +572,23 @@ class DetectSquat : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED) get_permissions()
+    }
+
+    private fun sendDataToOtherActivity() {
+        // wrongList 데이터를 ParcelablePair로 변환
+        val parcelableWrongList = wrongList.map { (first, second) ->
+            ParcelablePair(first, second)
+        }
+
+        // 데이터를 전송
+        val intent = Intent(this, ResultRecord::class.java)
+        intent.putParcelableArrayListExtra("wrongList", ArrayList(parcelableWrongList))
+        startActivity(intent)
+    }
+
+    fun getCurrentDateTime(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+        val currentDate = Date()
+        return dateFormat.format(currentDate)
     }
 }
