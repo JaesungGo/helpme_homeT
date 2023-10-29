@@ -32,13 +32,13 @@ public class ResultRecord extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-//    private List<String> formatData(List<ParcelablePair<Integer, Object>> dataList) {
-//        List<String> formattedData = new ArrayList<>();
-//        for (ParcelablePair<Integer, Object> pair : dataList) {
-//            // 원하는 형식으로 데이터 포맷팅
-//            String formattedItem = "First: " + pair.getFirst() + ", Second: " + pair.getSecond();
-//            formattedData.add(formattedItem);
-//        }
-//        return formattedData;
-//    }
+    private List<String> formatData(List<ParcelablePair<Integer, Object>> dataList) {
+        List<String> formattedData = new ArrayList<>();
+        for (ParcelablePair<Integer, Object> pair : dataList) {
+            // 원하는 형식으로 데이터 포맷팅
+            String formattedItem = "First: " + pair.getFirst() + ", Second: " + pair.getSecond();
+            formattedData.add(formattedItem);
+        }
+        return formattedData;
+    }
 }
