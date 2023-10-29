@@ -255,7 +255,7 @@ class DetectSquat : AppCompatActivity() {
 
                 // 스쿼트 검출 조건
                 val currentTime = System.currentTimeMillis()
-                var wrongSquat = wrongList.count { it != 0 }
+                wrongSquat = wrongList.count { it != 0 }
                 // 중앙 실선
                 val startPoint = PointF(540f, 0.0f)
                 val endPoint = PointF(540f, h.toFloat())
