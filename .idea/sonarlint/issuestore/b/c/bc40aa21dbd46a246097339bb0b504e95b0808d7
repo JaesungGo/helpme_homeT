@@ -1,0 +1,17 @@
+
+C
+java:S1604-"(Make this anonymous inner class a lambda(áÅó¦ûÿÿÿÿ
+>
+java:S1604E"(Make this anonymous inner class a lambda(‰ÿúÃ
+>
+java:S16048"(Make this anonymous inner class a lambda(‘°ç±
+A
+java:S1659"+Declare "mPasswordText" on a separate line.(‚×Ä
+q
+java:S1450"[Remove the "mDatabaseRef" field and declare it as a local variable in the relevant methods.( ÇØÔ
+n
+java:S1450"XRemove the "mLoginBtn" field and declare it as a local variable in the relevant methods.(Ÿ†«¨
+u
+java:S1450"ZRemove the "mResigettxt" field and declare it as a local variable in the relevant methods.(ú·¾›úÿÿÿÿ
+F
+java:S1068"0Remove this unused "mDatabaseRef" private field.( ÇØÔ

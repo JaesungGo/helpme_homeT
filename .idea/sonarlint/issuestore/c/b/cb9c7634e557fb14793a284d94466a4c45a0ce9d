@@ -1,0 +1,31 @@
+
+C
+java:S1604P"(Make this anonymous inner class a lambda(©þ’èÿÿÿÿÿ
+C
+java:S1604|"(Make this anonymous inner class a lambda(¯×¶öþÿÿÿÿ
+C
+java:S1604x"(Make this anonymous inner class a lambda(†ÅË§þÿÿÿÿ
+D
+java:S1604…"(Make this anonymous inner class a lambda(œÁÈÌþÿÿÿÿ
+C
+java:S1604c"(Make this anonymous inner class a lambda(—ˆ§Éûÿÿÿÿ
+D
+java:S1604µ"(Make this anonymous inner class a lambda(¹ç¹×þÿÿÿÿ
+_
+java:S1659)"JDeclare "mPasswordText" and all following declarations on a separate line.(™†™
+y
+java:S1450,"^Remove the "mChooseImageBtn" field and declare it as a local variable in the relevant methods.(ŠÈòœùÿÿÿÿ
+x
+java:S14500"]Remove the "mGenderSpinner" field and declare it as a local variable in the relevant methods.(Áªóùþÿÿÿÿ
+q
+java:S1450*"[Remove the "mregisterBtn" field and declare it as a local variable in the relevant methods.(êˆÛÊ
+Q
+java:S1874r"6Remove this use of "ProgressDialog"; it is deprecated.(×¡Ç‹ýÿÿÿÿ
+Q
+java:S1874r"6Remove this use of "ProgressDialog"; it is deprecated.(×¡Ç‹ýÿÿÿÿ
+H
+java:S1874s"2Remove this use of "setMessage"; it is deprecated.(àðÊ¿
+T
+java:S1874›">Remove this use of "startActivityForResult"; it is deprecated.(°þ¹k
+a
+java:S1874Ÿ"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(ŸŒ¹Ñ

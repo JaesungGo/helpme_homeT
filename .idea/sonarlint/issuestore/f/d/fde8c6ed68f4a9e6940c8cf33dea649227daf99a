@@ -1,0 +1,15 @@
+
+J
+java:S1604""(Make this anonymous inner class a lambda(‚Β–ÿÿÿÿÿ8Υ£‘Έ1
+J
+java:S16044"(Make this anonymous inner class a lambda(γ’ζÒώÿÿÿÿ8Υ£‘Έ1
+s	java:S116"RRename this field "ContBtn" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Γι§Λωÿÿÿÿ8Γ¤‘Έ1
+u	java:S116"TRename this field "CancelBtn" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Γι§Λωÿÿÿÿ8Γ¤‘Έ1
+I
+java:S1659"'Declare "CancelBtn" on a separate line.(Γι§Λωÿÿÿÿ8Μ¤‘Έ1
+z
+java:S1450"XRemove the "CancelBtn" field and declare it as a local variable in the relevant methods.(Γι§Λωÿÿÿÿ8Σ¤‘Έ1
+R
+java:S1874C"0Remove this use of "getColor"; it is deprecated.(­®Πώÿÿÿÿ8κ¤‘Έ1
+R
+java:S1874G"0Remove this use of "getColor"; it is deprecated.(²Λό”ϊÿÿÿÿ8™ύΉ1

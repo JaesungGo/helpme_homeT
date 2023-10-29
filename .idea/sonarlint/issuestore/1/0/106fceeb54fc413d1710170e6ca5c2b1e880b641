@@ -1,0 +1,16 @@
+
+{
+java:S2293&"YReplace the type specification in this constructor call with the diamond operator ("<>").(€çˆúÿÿÿÿ8¯ìœ’¶1
+u
+java:S22934"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ê‰i8°ìœ’¶1
+u
+java:S22934"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ê‰i8°ìœ’¶1
+q	java:S116&"PRename this field "Array" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(€çˆúÿÿÿÿ8æìœ’¶1
+s
+java:S1450%"VRemove the "adapter" field and declare it as a local variable in the relevant methods.(£üÄ¼8îìœ’¶1
+X	java:S1251"<This block of commented-out lines of code should be removed.(­“Ø´8÷ìœ’¶1
+]	java:S125<"<This block of commented-out lines of code should be removed.(½¿Çáüÿÿÿÿ8úìœ’¶1
+N
+java:S1068!"1Remove this unused "mFirebaseAuth" private field.(ûºÙ8ûìœ’¶1
+R
+java:S1068#"0Remove this unused "mDatabaseRef" private field.(¡î§¶şÿÿÿÿ8üìœ’¶1

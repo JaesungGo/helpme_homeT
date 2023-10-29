@@ -1,0 +1,13 @@
+
+Q
+java:S1066S"/Merge this if statement with the enclosing one.(óªèúÿÿÿÿ8Ê’¶1
+J
+java:S16047"(Make this anonymous inner class a lambda(Á¤Ïşÿÿÿÿ8Ë’¶1
+x
+java:S1450!"[Remove the "calendarView" field and declare it as a local variable in the relevant methods.(ÑüÂÚ8· ’¶1
+o
+java:S3776*"RRefactor this method to reduce its Cognitive Complexity from 52 to the 15 allowed.(«ÃÀ÷8¿ ’¶1
+]	java:S125?"<This block of commented-out lines of code should be removed.(¸­àİùÿÿÿÿ8Ä ’¶1
+C	java:S131b""Add a default case to this switch.(ï—†äûÿÿÿÿ8¡’¶1
+R
+java:S1068'"0Remove this unused "mDatabaseRef" private field.(¡î§¶şÿÿÿÿ8™¡’¶1

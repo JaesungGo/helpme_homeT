@@ -1,0 +1,7 @@
+
+o
+java:S1104
+"RMake mCount a static final constant or non-public and provide accessors if needed.(şÿÉ8ßûàº1
+n	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(¨³èŞùÿÿÿÿ8ßûàº1
+g
+java:S2637"EThis method's return value is marked "@NonNull" but null is returned.(Ìñ“ÿÿÿÿÿ8õûàº1

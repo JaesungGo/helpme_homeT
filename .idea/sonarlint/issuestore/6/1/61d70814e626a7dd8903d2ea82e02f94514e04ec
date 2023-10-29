@@ -1,0 +1,9 @@
+
+2kotlin:S1128
+"Remove this unused import.(áİ×Ú
+lkotlin:S100É"TRename function "open_camera" to match the regular expression ^[a-zA-Z][a-zA-Z0-9]*$(ÇÊ³œ
+pkotlin:S100ê"XRename function "get_permissions" to match the regular expression ^[a-zA-Z][a-zA-Z0-9]*$(Î¿”
+Akotlin:S1874Ñ"#Deprecated code should not be used.(ñŞÅòøÿÿÿÿ
+rkotlin:S1186ß"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡–ï=
+xkotlin:S1186ã"ZAdd a nested comment explaining why this function is empty or complete the implementation.(û÷Şİüÿÿÿÿ
+skotlin:S1186Ø"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ÉÉæ’
