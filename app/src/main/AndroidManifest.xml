@@ -44,6 +44,7 @@
         <activity
             android:name=".DetectSitUp"
             android:exported="false" />
+
         <activity
             android:name=".SitUpActivity"
             android:exported="false" />

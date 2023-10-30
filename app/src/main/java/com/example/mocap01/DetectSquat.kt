@@ -488,9 +488,6 @@ class DetectSquat : AppCompatActivity() {
                 Log.e(TAG, "Failed to check if node exists: $error")
             }
         })
-//        onPause()
-//        closeCamera()
-//        stopBackgroundThread()
         finish()
     }
 
