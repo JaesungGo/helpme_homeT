@@ -419,7 +419,7 @@ class DetectSquat : AppCompatActivity() {
                     allNonZero ) // 다리를 좁게 앉았을 때
                 {
                     if (wrongList.lastOrNull()?.first != 3) {
-                        wrongList.add(Pair(2, recordTime))
+                        wrongList.add(Pair(3, recordTime))
                     }
                     paint.color = Color.RED
                     isStanding = false

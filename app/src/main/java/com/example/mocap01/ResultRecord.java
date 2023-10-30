@@ -53,7 +53,7 @@ public class ResultRecord extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveDataToFirebase(formatData(receivedWrongList));
+                finish();
             }
         });
     }
@@ -79,25 +79,5 @@ public class ResultRecord extends AppCompatActivity {
             formattedData.add(formattedItem);
         }
         return formattedData;
-    }
-
-    private void saveDataToFirebase(List<String> formattedData) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference userRef = database.getReference("Users");
-        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date());
-        String today2 = new SimpleDateFormat("HH:mm", Locale.KOREA).format(new Date());
-        DatabaseReference squatsRef3 = userRef.child("Check2").child(today).child("Recode").child(today2);
-
-        squatsRef3.setValue(formattedData).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(ResultRecord.this, "데이터 저장에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ResultRecord.this, "데이터 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 }
