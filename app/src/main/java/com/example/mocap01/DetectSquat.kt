@@ -75,9 +75,10 @@ class DetectSquat : AppCompatActivity() {
 
     // 스쿼트 정확도 , 쿨다운 시간 , 최근 스쿼트 타임을 정의
     private val COOLDOWN_TIME_MS = 1100L
-    private val SITDOWN_TIME_MS = 500L
+    private val SITDOWN_TIME_MS = 700L
     private var firstSquatTime = 0L
     private var firstSitTime = 0L
+    private var secondSitTime = 0L
     private val recordTime = getCurrentDateTime()
     private var isSquatting = false
     private var isSitting = false
@@ -267,7 +268,7 @@ class DetectSquat : AppCompatActivity() {
 
                 val Rangle = calculateAngle(RankleKneeSlope, RkneeHipSlope)
                 val RangleInDegrees = if (Rangle < 0) Rangle + 180 else Rangle
-                
+
                 // 관절 검출에 필요한 관절 이름만 포함하는 배열 정의
                 val REQUIRED_PARTS = arrayOf(
                     "left_ankle", "left_knee", "left_hip",
@@ -288,12 +289,14 @@ class DetectSquat : AppCompatActivity() {
                 // 스쿼트 검출 조건
                 val currentTime = System.currentTimeMillis()
                 wrongSquat = wrongList.count { it.first !in listOf(0, 1) }
+                var toastSquat = wrongSquat+1
                 // 중앙 실선
                 val startPoint = PointF(540f, 0.0f)
                 val endPoint = PointF(540f, h.toFloat())
                 val linePaint = Paint()
 
                 if (leftankleY < 1400 && rightankleY < 1400 &&
+                    leftankleY > 1150 && rightankleY > 1150 &&
                     Math.abs(leftankle - Math.abs(rightankle)) <= 50
                     && allNonZero ) {
                     if (!measureEnv) {
@@ -345,24 +348,24 @@ class DetectSquat : AppCompatActivity() {
                     10 >= LshoulderInDegrees && 10 >= RshoulderInDegrees && allNonZero ) // 그냥 서있을 때
                 {
                     isStanding = true
-                    paint.color = Color.BLACK
-//                    wrongList.add(Pair(0,0))
+                    paint.color = Color.WHITE
                 }
                 else{
                     isStanding = false
                 }
-                if (60 <= LangleInDegrees && 60 <= RangleInDegrees &&
+                if (150 < leftankle + rightankle && 60 <= LangleInDegrees && 60 <= RangleInDegrees &&
                     60 <= LshoulderInDegrees && 60 <= RshoulderInDegrees && allNonZero
                 ) {
                     isSquatting = true
                     firstSquatTime = currentTime // 처음 앉은 시간W
                     paint.color = Color.GREEN
                     Handler(Looper.getMainLooper()).postDelayed({
-                        paint.color = Color.BLACK
-                    }, 200)
+                        paint.color = Color.WHITE
+                    }, 500)
                 }
                 if (!isSitting && isSquatting && currentTime - firstSquatTime >= COOLDOWN_TIME_MS
-                    && 10 >= LangleInDegrees && 10 >= RangleInDegrees
+                    && 10 >= LangleInDegrees && 10 >= RangleInDegrees &&
+                    Math.abs(firstSitTime - firstSquatTime )> COOLDOWN_TIME_MS
                 ) // 스쿼트 후 앉지 않고 일어섰을 때
                 {
                     squats++ // 스쿼트 횟수 증가
@@ -382,57 +385,65 @@ class DetectSquat : AppCompatActivity() {
                     isSquatting = false
                 }
 
-                if ( Math.abs(LangleInDegrees - RangleInDegrees) < 30 &&
-                    Math.abs(LshoulderInDegrees - RshoulderInDegrees ) < 30
+                if (Math.abs(LangleInDegrees - RangleInDegrees) < 30 &&
+                    Math.abs(LshoulderInDegrees - RshoulderInDegrees) < 30
                     && isSquatting && COOLDOWN_TIME_MS >= currentTime - firstSquatTime
                     && currentTime - firstSquatTime >= SITDOWN_TIME_MS
                     && 45 >= LangleInDegrees && LangleInDegrees > 25 &&
-                    45 >= RangleInDegrees && RangleInDegrees > 25 && allNonZero ) // 주저 앉았을때 (엉덩이를 깊게 내렸을 때 )
+                    45 >= RangleInDegrees && RangleInDegrees > 25 && allNonZero
+                ) // 주저 앉았을때 (엉덩이를 깊게 내렸을 때 )
                 {
                     firstSitTime = currentTime
-                    paint.color = Color.RED
-                    isSquatting = false
-                    isSitting = true
+
                     if (wrongList.lastOrNull()?.first != 2) {
                         wrongList.add(Pair(2, recordTime))
                     }
                     MotionToast.createColorToast(
                         this@DetectSquat,
                         "실패",
-                        "틀린 자세입니다. 엉덩이를 조금 더 들어주세요. $wrongSquat 개",
+                        "틀린 자세입니다. 엉덩이를 조금 더 들어주세요. $toastSquat 개",
                         MotionToastStyle.ERROR,
                         MotionToast.GRAVITY_TOP,
                         MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this@DetectSquat, www.sanju.motiontoast.R.font.helvetica_regular)
+                        ResourcesCompat.getFont(
+                            this@DetectSquat,
+                            www.sanju.motiontoast.R.font.helvetica_regular
+                        )
                     )
-                }
-                if (150 > leftankle + rightankle &&
-//                    5 >= Math.abs(lefthipX - leftkneeX) &&
-//                    5 >= Math.abs(righthipX - rightankleX )&&
-//                    30 >= LangleInDegrees && LangleInDegrees > 10 &&
-//                    30 >= RangleInDegrees && RangleInDegrees > 10 &&
-//                    30 >= LshoulderInDegrees && LshoulderInDegrees >= 10 &&
-//                    30 >= RshoulderInDegrees && RshoulderInDegrees >= 10 &&
-                    30 <= LangleInDegrees && 30 <= RangleInDegrees &&
-                    30 <= LshoulderInDegrees && 30 <= RshoulderInDegrees&&
-                    Math.abs(LangleInDegrees - RangleInDegrees) < 20 &&
-                    allNonZero ) // 다리를 좁게 앉았을 때
-                {
-                    if (wrongList.lastOrNull()?.first != 3) {
-                        wrongList.add(Pair(3, recordTime))
-                    }
                     paint.color = Color.RED
+                    isSquatting = false
+                    isSitting = true
+                }
+                if (Math.abs(LangleInDegrees - RangleInDegrees) < 30 &&
+                    Math.abs(LshoulderInDegrees - RshoulderInDegrees) < 30 &&
+                    150 > leftankle + rightankle &&
+                    23 <= LangleInDegrees && 23 <= RangleInDegrees &&
+                    23 <= LshoulderInDegrees && 23 <= RshoulderInDegrees &&
+                    currentTime - secondSitTime >= COOLDOWN_TIME_MS &&
+                    allNonZero
+                ) // 다리를 좁게 앉았을 때
+                {
+                    secondSitTime = currentTime
+
+                    wrongList.add(Pair(3,recordTime))
+                    paint.color = Color.RED
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        paint.color = Color.WHITE
+                    }, 500)
                     isStanding = false
                     isSquatting = false
                     isSitting = true
                     MotionToast.createColorToast(
                         this@DetectSquat,
                         "실패",
-                        "틀린 자세입니다. 다리를 조금 더 벌려주세요. $wrongSquat 개",
+                        "틀린 자세입니다. 다리를 조금 더 벌려주세요. $toastSquat 개",
                         MotionToastStyle.ERROR,
                         MotionToast.GRAVITY_TOP,
                         MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this@DetectSquat, www.sanju.motiontoast.R.font.helvetica_regular)
+                        ResourcesCompat.getFont(
+                            this@DetectSquat,
+                            www.sanju.motiontoast.R.font.helvetica_regular
+                        )
                     )
                 }
 
@@ -441,14 +452,14 @@ class DetectSquat : AppCompatActivity() {
                 {
                     isStanding = true
                     isSitting = false
-                    paint.color = Color.BLACK
+                    paint.color = Color.WHITE
                 }
 
                 // 스쿼트 횟수 텍스트 뷰 업데이트
                 val squatsTextView = findViewById<TextView>(R.id.squatsTextView)
                 squatsTextView.text = "현재 스쿼트 개수: $squats"
                 val squatsTextView2 = findViewById<TextView>(R.id.squatsTextView2)
-                squatsTextView2.text = "틀린 스쿼트 개수 : $wrongSquat"
+                squatsTextView2.text = "틀린 스쿼트 개수 : $toastSquat"
                 imageView.setImageBitmap(mutable)
             }
         }
