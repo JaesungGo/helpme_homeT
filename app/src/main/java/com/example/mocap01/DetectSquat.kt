@@ -296,7 +296,7 @@ class DetectSquat : AppCompatActivity() {
                 val endPoint = PointF(540f, h.toFloat())
                 val linePaint = Paint()
 
-                if (leftankleY < 1400 && rightankleY < 1400 &&
+                if (leftankleY < 1480 && rightankleY < 1480 &&
                     leftankleY > 1150 && rightankleY > 1150 &&
                     Math.abs(leftankle - Math.abs(rightankle)) <= 50
                     && allNonZero ) {
