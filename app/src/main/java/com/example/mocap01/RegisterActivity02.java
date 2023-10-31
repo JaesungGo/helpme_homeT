@@ -33,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class RegisterActivity02 extends AppCompatActivity {
@@ -50,6 +51,7 @@ public class RegisterActivity02 extends AppCompatActivity {
     private DatePicker mDatePicker; // DatePicker 선언
     private String selectedGender;
     private String selectedBirthday;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +128,10 @@ public class RegisterActivity02 extends AppCompatActivity {
                                     public void onSuccess(Uri downloadUri) {
                                         String profileImageUrl = downloadUri.toString();
                                         selectedBirthday = getSelectedDate(); // 선택한 생년월일 가져오기
-                                        saveUserToFirebase(email, pwd, profileImageUrl, selectedGender, selectedBirthday,height,weight);
+                                        int age = calculateAge(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth()); // 나이 계산
+                                        String ageGroup = Groupage(age);
+                                        saveUserToFirebase(email, pwd, profileImageUrl, selectedGender,ageGroup, selectedBirthday,height,weight,age);
+                        mDialog.dismiss();
                                     }
                                 });
                             }
@@ -139,13 +144,42 @@ public class RegisterActivity02 extends AppCompatActivity {
                     } else {
                         String profileImageUrl = "https://firebasestorage.googleapis.com/v0/b/opencv-620cd.appspot.com/o/default_profile_image.png?alt=media&token=de5fdd6b-3695-4008-b32e-7b4b24e0f701&_gl=1*czy4xs*_ga*MjA3MjY4MjI0Ny4xNjc5OTY4MzYx*_ga_CW55HF8NVT*MTY4NjEyNDQ3MC4xNS4xLjE2ODYxMjRNSVC4MC4wLjA."; // 특정 이미지 URL로 대체
                         selectedBirthday = getSelectedDate(); // 선택한 생년월일 가져오기
-                        saveUserToFirebase(email, pwd, profileImageUrl, selectedGender, selectedBirthday,height,weight);
+                        int age = calculateAge(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth()); // 나이 계산
+                        String ageGroup = Groupage(age);
+                        saveUserToFirebase(email, pwd, profileImageUrl, selectedGender, ageGroup, selectedBirthday,height,weight,age);
                     }
                 } else {
                     Toast.makeText(RegisterActivity02.this, "비밀번호가 틀렸습니다. 다시 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private  String Groupage(int age){
+
+        String ageGroup = "";
+        if (age >= 10 && age < 20) {
+            ageGroup = "10대";
+        } else if (age >= 20 && age < 30) {
+            ageGroup = "20대";
+        } else if (age >= 30 && age < 40) {
+            ageGroup = "30대";
+        } else if (age >= 40 && age < 50) {
+            ageGroup = "40대";
+        } else if (age >= 50) {
+            ageGroup = "50대 이상";
+        }
+        return ageGroup;
+    }
+    private int calculateAge(int year, int month, int day) {
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        dob.set(year, month, day);
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+        return age;
     }
 
     private void openImageChooser() {
@@ -177,7 +211,7 @@ public class RegisterActivity02 extends AppCompatActivity {
         return year + "-" + month + "-" + day;
     }
 
-    private void saveUserToFirebase(String email, String pwd, String profileImageUrl, String gender, String birthday, String height, String weight) {
+    private void saveUserToFirebase(String email, String pwd, String profileImageUrl, String gender,String ageGroup, String birthday, String height, String weight,int age) {
         firebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(RegisterActivity02.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -196,18 +230,28 @@ public class RegisterActivity02 extends AppCompatActivity {
                     hashMap.put("birthday", birthday);
                     hashMap.put("height", height); // 키
                     hashMap.put("weight", weight); // 몸무게
+                    hashMap.put("age",age);
+                    hashMap.put("ageGroup",ageGroup);
 
                     DatabaseReference reference = mDatabaseRef.child("Users").child(uid).child("Info");
                     reference.setValue(hashMap);
 
+
+
+
+
                     Intent intent = new Intent(RegisterActivity02.this, MainActivity.class);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(RegisterActivity02.this, "회원가입에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
-                } else {
+                    Toast.makeText(RegisterActivity02.this, "회원가입에 성공하셨습니다.", Toast.LENGTH_SHORT).show();}
+
+                else {
                     Toast.makeText(RegisterActivity02.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+
+        }
+    });
     }
 }
+
+

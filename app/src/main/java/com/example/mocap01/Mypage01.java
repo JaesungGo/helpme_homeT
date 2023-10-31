@@ -1,5 +1,7 @@
 package com.example.mocap01;
 
+import static java.lang.String.valueOf;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -36,6 +38,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 public class Mypage01 extends Fragment {
 
@@ -44,6 +47,7 @@ public class Mypage01 extends Fragment {
     private DatePicker mDatePicker;
     private EditText mHeightEdit;
     private EditText mWeightEdit;
+    private EditText mSquatEdit;
     private Button mSelectImageButton;
     private Button mSaveButton;
     private TextView mGenderTextView;
@@ -60,6 +64,9 @@ public class Mypage01 extends Fragment {
     private ActivityResultLauncher<Intent> mGetContentLauncher;
     private String mGender;  // 변수 추가: 성별 정보를 저장
     private String mBirthday;  // 변수 추가: 생년월일 정보를 저장
+    private String mUserGender;
+    private String mUserAgeGroup;
+    private int goalsquat;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +85,7 @@ public class Mypage01 extends Fragment {
         mSaveButton = rootView.findViewById(R.id.save_button);
         mGenderTextView = rootView.findViewById(R.id.genderTextView);
         mBirthdayTextView = rootView.findViewById(R.id.birthdayTextView);
+        mSquatEdit = rootView.findViewById(R.id.squat_edit_text);
 
         mSelectImageButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -107,6 +115,14 @@ public class Mypage01 extends Fragment {
         final String name = mNameEditText.getText().toString().trim();
         final String height = mHeightEdit.getText().toString().trim();
         final String weight = mWeightEdit.getText().toString().trim();
+        final String squatText = mSquatEdit.getText().toString().trim();
+        if (!TextUtils.isEmpty(squatText)) {
+            goalsquat = Integer.parseInt(squatText);
+        } else {
+            // 입력이 비어있거나 유효하지 않은 경우 처리
+            Toast.makeText(getActivity(), "목표스쿼트 입력해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
         if (TextUtils.isEmpty(name)) {
@@ -131,17 +147,20 @@ public class Mypage01 extends Fragment {
             uploadTask.addOnSuccessListener(taskSnapshot -> {
                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     mProfileImageUrl = uri.toString();
-                    updateUserProfile(name,mGender,mBirthday, height, weight);
+
+                    String birthDate = mBirthday;
+
+                    updateUserProfile(name,mGender,mBirthday, height, weight,mProfileImageUrl,goalsquat);
                 });
             }).addOnFailureListener(e -> {
                 Toast.makeText(getActivity(), "이미지 업로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
             });
         } else {
-            updateUserProfile(name,mGender,mBirthday, height, weight);
+            updateUserProfile(name,mGender,mBirthday, height, weight,null,goalsquat);
         }
     }
 
-    private void updateUserProfile(String name,String gender,String birthday, String height, String weight) {
+    private void updateUserProfile(String name,String gender,String birthday, String height, String weight,String mProfileImageUrl,int goalsquat) {
         String uid = mUser.getUid();
 
         User user = new User(uid, mUser.getEmail(), name, mProfileImageUrl);
@@ -149,6 +168,7 @@ public class Mypage01 extends Fragment {
         user.setWeight(weight);
         user.setGender(gender);
         user.setBirthday(birthday);
+        user.setGoalsquat(goalsquat);
 
         mDatabaseRef.setValue(user)
                 .addOnSuccessListener(aVoid -> {
@@ -170,6 +190,7 @@ public class Mypage01 extends Fragment {
                     mBirthday = snapshot.child("birthday").getValue(String.class);
                     String height = snapshot.child("height").getValue(String.class);
                     String weight = snapshot.child("weight").getValue(String.class);
+                    Integer goalsquat = snapshot.child("goalsquat").getValue(Integer.class);
 
                     mHeightEdit.setText(height);
                     mWeightEdit.setText(weight);
@@ -179,6 +200,7 @@ public class Mypage01 extends Fragment {
 
                     String name = snapshot.child("name").getValue(String.class);
                     mNameEditText.setText(name);
+                    mSquatEdit.setText(valueOf(goalsquat));
 
                     String profileImageUrl = snapshot.child("profileImageUrl").getValue(String.class);
                     if (!TextUtils.isEmpty(profileImageUrl)) {
@@ -206,6 +228,9 @@ public class Mypage01 extends Fragment {
         private String weight;
         private String gender;
         private String birthday;
+        private int age;
+        private int goalsquat;
+
 
         public User() {
             // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -280,5 +305,13 @@ public class Mypage01 extends Fragment {
         public void setBirthday(String birthday) {
             this.birthday = birthday;
         }
+        public void setGoalsquat(int goalsquat) {
+            this.goalsquat = goalsquat;
+        }
+
+        public int getGoalsquat() {
+            return goalsquat;
+        }
+        }
     }
-}
+

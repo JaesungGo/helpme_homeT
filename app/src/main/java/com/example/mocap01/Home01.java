@@ -33,6 +33,7 @@ public class Home01 extends Fragment {
     private TextView nameTextView;
     private ImageView photoImageView;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
     private Context context; // 컨텍스트 참조 보존을 위한 변수
 
     @Nullable
@@ -48,28 +49,67 @@ public class Home01 extends Fragment {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
-            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Info");
+            //DatabaseReference userAgeGroupRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).getParent(); // userAgeGroup에 대한 참조
 
-            databaseRef.addValueEventListener(new ValueEventListener() {
+            /*userAgeGroupRef.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists() && context != null) { // 컨텍스트가 null이 아닌지 확인
-                        String name = snapshot.child("name").getValue(String.class);
-                        String photoUrl = snapshot.child("profileImageUrl").getValue(String.class);
+                public void onDataChange(@NonNull DataSnapshot ageGroupSnapshot) {
+                    if (ageGroupSnapshot.exists()) {
+                        String userAgeGroup = ageGroupSnapshot.getKey(); // userGender 가져오기
+                        DatabaseReference userGenderRef = ageGroupSnapshot.getRef().getParent(); // userGender에 대한 참조
+                        userGenderRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot genderSnapshot) {
+                                if (genderSnapshot.exists()) {
+                                    String userGender = genderSnapshot.getKey(); // userAgeGroup 가져오기*/
 
-                        nameTextView.setText("안녕하세요, " + name + "님!");
-                        Glide.with(context).load(photoUrl).into(photoImageView);
+                                    // userGender를 사용하여 databaseRef 설정
+                                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
+                                            .child("Users")
+                                            //.child(userGender)
+                                            //.child(userAgeGroup)
+                                            .child(uid)
+                                            .child("Info");
+                                    databaseRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists() && context != null) { // 컨텍스트가 null이 아닌지 확인
+                                                String name = snapshot.child("name").getValue(String.class);
+                                                String photoUrl = snapshot.child("profileImageUrl").getValue(String.class);
+
+                                                nameTextView.setText("안녕하세요, " + name + "님!");
+                                                Glide.with(context).load(photoUrl).into(photoImageView);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            // 데이터베이스 에러 처리
+                                            // 에러 로그 출력 또는 사용자에게 오류 메시지 표시 등의 작업을 수행할 수 있습니다.
+                                            Log.e("Home01", "Database Error: " + error.getMessage());
+                                        }
+                                    });
+                                }
+                            /*}
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // userAgeGroup 데이터베이스 에러 처리
+                                Log.e("Home01", "userAgeGroup Database Error: " + databaseError.getMessage());
+                            }
+                        });
                     }
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // 데이터베이스 에러 처리
-                    // 에러 로그 출력 또는 사용자에게 오류 메시지 표시 등의 작업을 수행할 수 있습니다.
-                    Log.e("Home01", "Database Error: " + error.getMessage());
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // userGender 데이터베이스 에러 처리
+                    Log.e("Home01", "userGender Database Error: " + databaseError.getMessage());
                 }
             });
-        }
+
+
+        }*/
 
         // ViewPager2 초기화 및 어댑터 설정
         ViewPager2 viewPager = rootView.findViewById(R.id.viewpager);

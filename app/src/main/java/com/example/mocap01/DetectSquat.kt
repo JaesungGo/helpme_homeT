@@ -1,5 +1,6 @@
 package com.example.mocap01
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -117,7 +118,7 @@ class DetectSquat : AppCompatActivity() {
         model = LiteModelMovenetSingleposeThunderTfliteFloat164.newInstance(this)
         imageView = findViewById(R.id.imageView)
         textureView = findViewById(R.id.textureView)
-        cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
         handlerThread = HandlerThread("videoThread")
         handlerThread.start()
         handler = Handler(handlerThread.looper)
@@ -286,7 +287,7 @@ class DetectSquat : AppCompatActivity() {
                 var rightankle = Math.abs(rightankleX - 540)
 
                 // 스쿼트 검출 조건
-                val currentTime = System.currentTimeMillis()
+                val currentTime = currentTimeMillis()
                 wrongSquat = wrongList.count { it.first !in listOf(0, 1) }
                 // 중앙 실선
                 val startPoint = PointF(540f, 0.0f)
@@ -472,8 +473,8 @@ class DetectSquat : AppCompatActivity() {
         val today2 = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
         val activeValue = squats // 새로운 ActiveValue 값
         val activaValue2 = wrongSquat
-        val squatsRef = userRef.child("Check2").child(today).child("Squat").child(today2)
-        val squatsRef2 = userRef.child("Check2").child(today).child("WrongSquat").child(today2)
+        val squatsRef = userRef.child("Check2").child(today).child("CSquat").child(today2)
+        val squatsRef2 = userRef.child("Check2").child(today).child("WSquat").child(today2)
 
         // 해당 날짜에 해당하는 노드가 없으면 생성하고 값을 저장
         squatsRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -560,8 +561,8 @@ class DetectSquat : AppCompatActivity() {
     }
 
     fun get_permissions() {
-        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), 101)
         }
     }
 

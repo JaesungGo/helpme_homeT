@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,58 +8,114 @@
     android:background="#BDBDBD"
     tools:context=".Record">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40sp"
+            android:text="   운동기록   "
+            android:textColor="#FFFF"
+            android:textStyle="bold"
+            android:background="#059AA4"
+            android:textSize="40sp"
+            android:layout_alignParentTop="@+id/calendarView" />
 
-    <TextView
-        android:id="@+id/today"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40sp"
-        android:text="   운동기록   "
-        android:textColor="#FFFF"
-        android:textStyle="bold"
-        android:background="#059AA4"
-        android:textSize="40sp"
-        android:layout_alignParentTop="@+id/calendarView" />
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="false"
+            android:layout_centerHorizontal="true"
+            android:selectedWeekBackgroundColor="#059AA4"
+            android:layout_marginTop="130dp"
+            />
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="false"
-        android:layout_centerHorizontal="true"
-        android:selectedWeekBackgroundColor="#059AA4"
-        android:layout_marginTop="130dp"
-        />
-
-    <TextView
-        android:id="@+id/exercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/calendarView"
-        android:layout_marginTop="0dp"
-        android:gravity="left"
-        android:text="  운동량  "
-        android:textStyle="bold"
-        android:textColor="#ffff"
-        android:background="#059AA4"
-        android:textSize="30sp" />
-
-
-    <TextView
-        android:id="@+id/dataTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/exercise"
-        android:layout_marginTop="20dp"
-        android:gravity="left"
-        android:text="  운동량  "
-        android:textStyle="bold"
-        android:textColor="#111111"
-        android:textSize="25sp" />
+        <TextView
+            android:id="@+id/exercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/calendarView"
+            android:layout_marginTop="50dp"
+            android:gravity="left"
+            android:text="  운동량  "
+            android:textStyle="bold"
+            android:textColor="#ffff"
+            android:background="#059AA4"
+            android:textSize="30sp" />
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/dataTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/exercise"
+            android:layout_marginTop="50dp"
+            android:gravity="left"
+            android:text="  운동량  "
+            android:textStyle="bold"
+            android:textColor="#111111"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/exerciseAverage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/dataTextView"
+            android:layout_marginTop="50dp"
+            android:gravity="left"
+            android:text="  운동량 비교  "
+            android:textStyle="bold"
+            android:textColor="#ffff"
+            android:background="#059AA4"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/squatAverageTextview"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/exerciseAverage"
+            android:layout_marginTop="40dp"
+            android:text="  사용자들과의 운동량비교  "
+            android:textStyle="bold"
+            android:textColor="#111111"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/exerciseAccuracy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/squatAverageTextview"
+            android:layout_marginTop="50dp"
+            android:gravity="left"
+            android:text="  운동 정확도  "
+            android:textStyle="bold"
+            android:textColor="#ffff"
+            android:background="#059AA4"
+            android:textSize="30sp" />
+
+        <com.github.lzyzsd.circleprogress.CircleProgress
+            android:id="@+id/circleProgress"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/exerciseAccuracy"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="100dp"
+            app:circle_progress="0"
+            app:circle_max="100"
+            app:circle_text_size="30dp"
+            app:circle_unfinished_color="#73AFAA"
+            app:circle_finished_color="#059AA4"/>
+
+    </RelativeLayout>
+</ScrollView>
 

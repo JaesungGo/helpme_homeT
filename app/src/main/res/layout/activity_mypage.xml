@@ -144,6 +144,26 @@
                 android:textSize="16sp"/>
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text=" 하루 목표 스쿼트 "
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:background="#059AA4"
+            android:textSize="25dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <EditText
+            android:id="@+id/squat_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="하루 목표 스쿼트량 입력"
+            android:inputType="text"
+            android:layout_marginTop="16dp" />
+
         <!-- 정보 저장 버튼 -->
         <Button
             android:id="@+id/save_button"
