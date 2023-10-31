@@ -7,21 +7,26 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="400dp"
-        android:layout_height="680dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="0dp"
-        android:background="#1111"
-        android:gravity="center"
+        android:layout_width="410dp"
+        android:layout_height="370dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="50dp"
         android:autoSizeTextType="uniform"
+        android:background="#11FFFFFF"
+        android:gravity="center"
         android:padding="25dp"
-        android:text="\n--- 하체 굴곡 ---\n\n
-엉덩이를 뒤로 내밀어 천천히 하체를 굴려 내립니다.
-무릎과 엉덩이는 동시에 굴곡되어야 합니다.\n\n
---- 하체 각도 ---\n\n
-허벅지가 바닥과 평행이 되도록 내려갑니다.
-무릎은 발끝의 방향으로 살짝 향하도록 유지합니다.\n"
+        android:text="무릎 방향\n
+무릎이 발끝 방향을 향하게 하고 내부로 무릎이 들어가지 않도록 주의합니다.
+무릎이 바깥쪽으로 벌어지지 않도록 합니다.\n\n
+하체 수평\n
+하체가 바닥과 수평이 되도록 내려가야 합니다.
+엉덩이가 지나치게 아래로 내려가거나 너무 높게 올리지 않도록 주의합니다."
         android:textColor="#000000" />
+
+    <ImageView
+        android:layout_width="410dp"
+        android:layout_height="250dp"
+        android:src="@drawable/img_1" />
 
 
 </LinearLayout>
