@@ -76,7 +76,7 @@ class SquatActivity : AppCompatActivity(), SensorEventListener {
             val yrAngle = (90 - acos(y / r) * 180 / PI).toInt()
             Log.d("TAG", "onSensorChanged: xrAngle: $xrAngle, yrAngle: $yrAngle")
 
-            if (yrAngle in 80..85) {
+            if (yrAngle in 82..83) {
                 tiltValuesTextView.text = "정상"
 
                 if (lastYrAngle == 0 || lastYrAngle != yrAngle) {

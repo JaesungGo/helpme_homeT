@@ -49,7 +49,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="9dp"
         android:layout_marginEnd="310dp"
-        android:text="Button" />
+        android:text="피 드 백" />
 
 
 </RelativeLayout>
