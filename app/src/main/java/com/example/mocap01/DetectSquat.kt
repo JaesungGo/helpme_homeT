@@ -80,7 +80,7 @@ class DetectSquat : AppCompatActivity() {
     private var firstSquatTime = 0L
     private var firstSitTime = 0L
     private var secondSitTime = 0L
-    private val recordTime = getCurrentDateTime()
+    private var recordTime = ""
     private var isSquatting = false
     private var isSitting = false
     private var isStanding = false
@@ -370,6 +370,7 @@ class DetectSquat : AppCompatActivity() {
                 ) // 스쿼트 후 앉지 않고 일어섰을 때
                 {
                     squats++ // 스쿼트 횟수 증가
+                    recordTime = getCurrentDateTime()
                     wrongList.add(Pair(1,recordTime))
                     MotionToast.createColorToast(
                         this@DetectSquat,
@@ -395,6 +396,7 @@ class DetectSquat : AppCompatActivity() {
                 ) // 주저 앉았을때 (엉덩이를 깊게 내렸을 때 )
                 {
                     firstSitTime = currentTime
+                    recordTime = getCurrentDateTime()
 
                     if (wrongList.lastOrNull()?.first != 2) {
                         wrongList.add(Pair(2, recordTime))
@@ -425,6 +427,7 @@ class DetectSquat : AppCompatActivity() {
                 ) // 다리를 좁게 앉았을 때
                 {
                     secondSitTime = currentTime
+                    recordTime = getCurrentDateTime()
 
                     wrongList.add(Pair(3,recordTime))
                     paint.color = Color.RED
@@ -460,7 +463,7 @@ class DetectSquat : AppCompatActivity() {
                 val squatsTextView = findViewById<TextView>(R.id.squatsTextView)
                 squatsTextView.text = "현재 스쿼트 개수: $squats"
                 val squatsTextView2 = findViewById<TextView>(R.id.squatsTextView2)
-                squatsTextView2.text = "틀린 스쿼트 개수 : $toastSquat"
+                squatsTextView2.text = "틀린 스쿼트 개수 : $wrongSquat"
                 imageView.setImageBitmap(mutable)
             }
         }
